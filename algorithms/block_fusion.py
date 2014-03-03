@@ -3,7 +3,6 @@ __author__ = 'Tomasz Godzik'
 from bs4 import BeautifulSoup
 from bs4 import NavigableString
 import re
-from functools import reduce
 
 html_doc = open("html_data/katowice.html").read()
 
