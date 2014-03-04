@@ -1,1 +1,1 @@
-__author__ = 'Tomasz Godzik'
+from .fuzzy_jaccard import *
