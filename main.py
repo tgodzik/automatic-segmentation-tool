@@ -1,17 +1,18 @@
 
+# functionalize it
 refJson = """
-{"page1" : ["aaaa", "bbbb", "cccc"]}
+{"page1" : ["aaaaaaaaaaaaa", "bbbb", "cccc"]}
 """
 
 testJson = """
-{"page1" : ["aaaabb","bbcccc"]}
+{"page1" : ["aaaaaaaaaaaaaa","bbbbcccc"]}
 """
 
 testJson2 = """
 {"page1" : ["aa","aa","bb","bb","cc","cc"]}
 """
 
-from metrics import index
+from metrics import simple
 
-for i in index(refJson, testJson2):
+for i in simple.index(refJson, testJson):
     print i

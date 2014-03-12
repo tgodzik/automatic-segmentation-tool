@@ -27,7 +27,7 @@ def recursive_create(node):
     return base
 
 
-doc = open("html_data/test.html").read()
+doc = open("html_data/segment1.html").read()
 soup = BeautifulSoup(doc)
 
 tree = recursive_create(soup)

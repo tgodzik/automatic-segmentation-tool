@@ -1,0 +1,1764 @@
+<div id="mainForum">
+
+
+<div class="k_nForum_CommentatorTitle kopyto default  notActive v2" id="nForum_commentatorFormTitleBox">
+    <div class="k_commentInfo">
+        <div class="k_commentatorFormValidationError"></div>
+        <div id="nForum_commentatorFormAttachmentError">
+            Nie udało się dodać załącznika.
+        </div>
+        <div id="nForum_commentatorFormAttachmentLimitError">
+            Nie udało się dodać więcej załączników, usuń któryś z już dodanych.
+        </div>
+        <div id="nForum_commentatorFormWaitError">
+            Poczekaj chwilę - trwa dodawanie załączników.
+        </div>
+    </div>
+</div>
+
+
+<div class="k_nForum_CommentatorTitle kopyto  default  notActive v2" id="nForum_commentSentInfoBox">
+    <h3 class="k_sendTitleSuccess k_hide k_nForum_Header1">Komentarz został wysłany.</h3>
+
+    <h3 class="k_sendTitleError k_hide k_nForum_Header1">Przepraszamy Twój komentarz nie może zostać wysłany</h3>
+
+    <div class="k_commentInfo">
+        <span class="k_sendDesc"></span>
+        <span class="k_sendSuccessSubject k_hide">Wkrótce pojawi się w serwisie. Zachęcamy do dalszej dyskusji.</span>
+        <span class="k_sendErrorSubject k_hide">Wystąpił błąd i nie można zapisać komentarza.</span>
+    </div>
+</div>
+
+
+<div class="k_nForum_Commentator kopyto default  notActive v2">
+
+
+    <div id="nForum_commentatorForm" class="k_nForum_CommentatorForm kopyto">
+        <div class="commentatorSaveLoader"></div>
+        <form name="nForumComment" action="/komentarz-wyslij.html" method="post">
+            <input type="hidden" name="category_code" value="moto">
+            <input type="hidden" name="portal_code" value="onet">
+            <input type="hidden" name="disc_id" value="1102010">
+            <input type="hidden" name="disc_subject"
+                   value="&quot;Podatek ekologiczny&quot; zmusi Polaków do kupowania nowszych samochodów?">
+            <input type="hidden" name="disc_url"
+                   value="http://moto.onet.pl/aktualnosci/podatek-ekologiczny-zmusi-polakow-do-kupowania-nowszych-samochodow/4sxv9">
+            <input type="hidden" name="disc_type" value="">
+            <input type="hidden" name="source_id" value="">
+            <input type="hidden" name="parent_entry_id" value="0">
+            <input type="hidden" name="noAvatarUrl"
+                   value="http://m.ocdn.eu/_m/377d3a65a1c7ea3c6278fc3cc2902532,4,19.jpg">
+
+            <span class="onlyStatic" id="nForum_commentDefault">Napisz komentarz...</span>
+
+            <div id="nForum_commentatorContents">
+                <textarea cols="10" rows="8" name="commentContent" class="nForum_commentContent"></textarea>
+            </div>
+
+
+            <div id="nForum_commentatorAttachmentsContainer">
+                <div id="nForum_commentatorAttachments">
+                    <div>
+                        Dodaj: <a href="javascript:void(null);" class="link">link</a>|<a href="javascript:void(null);"
+                                                                                         class="video">wideo</a>|<a
+                            href="javascript:void(null);" class="photo">zdjęcie</a>
+                    </div>
+                </div>
+                <div class="nForum_commentatorAttachmentAdd hide" id="nForum_commentatorAttachmentsUrlAdd">
+                    <div>
+                        <label for="nForum_commentatorAttachmentsUrlAddInp">Podaj adres:</label>
+                        <input type="text" id="nForum_commentatorAttachmentsUrlAddInp" size="64" value="http://">
+                        <button type="button">Dodaj</button>
+                    </div>
+                </div>
+                <div class="nForum_commentatorAttachmentAdd hide" id="nForum_commentatorAttachmentsVideoAdd">
+                    <div>
+                        <label for="nForum_commentatorAttachmentsVideoAddInp">Wpisz adres:</label>
+                        <input type="text" id="nForum_commentatorAttachmentsVideoAddInp" size="64">
+                        <button type="button">Dodaj</button>
+                    </div>
+                </div>
+                <div class="nForum_commentatorAttachmentAdd hide" id="nForum_commentatorAttachmentsVideoEmbedAdd">
+                    <div>
+                        <label for="nForum_commentatorAttachmentsVideoEmbedAddInp">Wklej kod (embed):</label><br>
+                        <textarea id="nForum_commentatorAttachmentsVideoEmbedAddInp" rows="4" cols="65"></textarea>
+                        <button type="button">Dodaj</button>
+                    </div>
+                </div>
+                <div class="nForum_commentatorAttachmentAdd hide" id="nForum_commentatorAttachmentsPhotoAdd">
+                    <div>
+                        <label for="nForum_commentatorAttachmentsPhotoAddInp">Wpisz adres:</label>
+                        <input type="text" id="nForum_commentatorAttachmentsPhotoAddInp">
+                        <button type="button">Dodaj</button>
+                        <span id="nForum_mUploader">&nbsp;</span>
+                    </div>
+                </div>
+                <div class="nForum_commentatorAttachmentInfo nForum_commentatorAttachmentsAddInfo hide">
+
+                </div>
+            </div>
+            <div class="k_nForum_commentatorBrake"></div>
+
+            <div id="nForum_commentatorInfo">
+
+                <div id="nForum_commentatorAvatar">
+                    <img src="http://m.ocdn.eu/_m/377d3a65a1c7ea3c6278fc3cc2902532,4,19.jpg"
+                         rel="http://m.ocdn.eu/_m/377d3a65a1c7ea3c6278fc3cc2902532,4,19.jpg" alt="Brak zdjęcia">
+                </div>
+
+                <div id="nForum_commentatorSignature">
+                    <div class="k_signatureInput" id="nForum_commentatorSignaturePlaceholder">
+                        <span class="k_signature"></span>
+                        <input type="text" name="signature" value="Wpisz, jak chcesz się przedstawić"
+                               disabled="disabled">
+                    </div>
+
+                    <div class="k_signatureOptions">
+                        <div class="k_option " id="nForum_anonimSign">
+                            <input type="radio" name="loginType" checked="checked" value="no" id="nForum_loginType1">
+                            <label for="nForum_loginType1">podpis anonimowy</label><br>
+                        </div>
+
+
+                        <div class="k_option" id="nForum_kontoSign">
+                            <div class="k_nForum_Loader"></div>
+                            <input type="radio" name="loginType" disabled="disabled" value="konto"
+                                   id="nForum_loginType6">
+                            <label for="nForum_loginType6" id="nForum_commentatorKontoStatus">
+                                <span class="k_ForumSystemName">Onet - </span>
+                                <span class="k_ForumUserName"></span>
+                                <span class="k_changeKontoSign"><a target="_blank"
+                                                                   href="https://konto.onet.pl/profile.html">ustawienia,</a> </span>
+                            </label><br>
+                        </div>
+
+
+                        <div class="k_option" id="nForum_fbSign">
+                            <div class="k_nForum_Loader"></div>
+                            <input type="radio" name="loginType" disabled="disabled" value="fb" id="nForum_loginType3">
+                            <label for="nForum_loginType3" id="nForum_commentatorFacebookStatus">
+                                <span class="k_ForumSystemName">Facebook - </span>
+                                <span class="k_ForumUserName"></span>
+                            </label><br>
+                        </div>
+
+
+                    </div>
+                    <div class="clr"></div>
+                </div>
+                <div id="nForum_commentatorOptions">
+                    <div id="nForum_anonimOptions">
+                        <label><input type="checkbox" checked="checked" name="optAnonim_webNotify">Powiadamiaj o
+                            odpowiedzi</label><br>
+                    </div>
+                    <div id="nForum_onetOptions">
+                        <label><input type="checkbox" name="optOnet_publicationNotification">Powiadom mnie o publikacji</label><br>
+                        <label><input type="checkbox" name="optOnet_commentAnswerNotification">Powiadom o odpowiedziach
+                            na mój komentarz</label><br>
+                    </div>
+                    <div id="nForum_kontoOptions">
+                        <label><input type="checkbox" name="optKonto_publicationNotification">Powiadom mnie o publikacji</label><br>
+                        <label><input type="checkbox" name="optKonto_commentAnswerNotification">Powiadom o odpowiedziach
+                            na mój komentarz</label><br>
+                    </div>
+                    <div id="nForum_fbOptions">
+                        <label><input type="checkbox" name="optFb_publicationNotification">Powiadom mnie o
+                            publikacji</label><br>
+                        <label><input type="checkbox" name="optFb_commentAnswerNotification">Powiadom o odpowiedziach na
+                            mój komentarz</label><br>
+                        <label><input type="checkbox" name="optFb_publishOnFbTable">Opublikuj informację o tym wpisie na
+                            mojej tablicy w Facebook</label><br>
+                    </div>
+                    <div id="nForum_gfcOptions">
+                        <label><input type="checkbox" name="optGfc_publicationNotification">Powiadom mnie o
+                            publikacji</label><br>
+                        <label><input type="checkbox" name="optGfc_commentAnswerNotification">Powiadom o odpowiedziach
+                            na mój komentarz</label><br>
+                    </div>
+                    <div class="k_personalDataPerm rules">
+                        <label for="k_nForumPersonalDataPermR"><input type="checkbox" checked="checked"
+                                                                      name="personalDataPermR"
+                                                                      id="k_nForumPersonalDataPermR">Oświadczam, że
+                            akceptuję <a href="/forum/forum-regulamin.html" target="_blank"
+                                         onclick="OF.Tools.pageOpen('/forum/forum-regulamin.html');return false;">regulamin
+                                Forum</a>.</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="nForum_commentatorButtons">
+                <div class="k_rightPlaceHolder"><input type="submit" value="Wyślij"></div>
+            </div>
+
+            <div id="nForum_commentatorInfoLite" style="overflow:hidden;">
+                <div id="nForum_commentatorSignatureLite">
+                    <div class="k_signatureInput" id="nForum_commentatorSignatureLitePlaceholder">
+                        <span class="onlyStatic"
+                              id="nForum_signatureDefaultText">Wpisz, jak chcesz się przedstawić</span>
+                        <input type="text" name="signature" class="nForum_signature" value="">
+                    </div>
+                    <div id="nForum_commentatorDoLogin">
+                        <span class="k_nForumStrongTxt">lub</span> <span>zaloguj się</span>
+                        <span class="k_doLoginIco kForum_kontoIco"></span>
+                        <span class="k_doLoginIco kForum_fbIco"></span>
+                    </div>
+
+                </div>
+                <div id="nForum_anonimLiteOptions">
+                    <label><input type="checkbox" checked="checked" name="optAnonim_webNotifySimple">Powiadamiaj o
+                        odpowiedzi</label><br>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div id="forum" class="k_nForum_Reader kopyto default  v2">
+<div class="k_nForum_ReaderV2Header">
+    <h2 class="k_nForum_Header2 specialMenu">
+        <ul>
+            <li><b>Komentarze<span>(1 937)</span></b></li>
+            <li class="spacer">|</li>
+            <li class="nforumDiscMenu_Discussions"><a class="nforumDiscMenu"
+                                                      href="/tablica/wszystkie.html">Dyskusje </a></li>
+            <li class="nforumDiscMenu_Topics" style="display:none;"><a class="nforumDiscMenu"
+                                                                       href="/tablica/wszystkie.html">Tematy </a></li>
+        </ul>
+    </h2>
+</div>
+<div class="k_nForumReaderMenu">
+    <ul>
+        <li><b><a href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1102010,czytaj-popularne.html"
+                  class="">popularne</a></b></li>
+        <li class="spacer">|</li>
+        <li><a rel="nofollow"
+               href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,2,1102010,0,czytaj-najnowsze.html"
+               class="">najnowsze</a></li>
+        <li class="spacer">|</li>
+        <li><a rel="nofollow" href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,0,czytaj.html"
+               class="">wątki</a></li>
+        <li class="spacer">|</li>
+        <li class="myCommentsLink"><a rel="nofollow" href="/forum/moje-komentarze.html" class="">moje</a></li>
+    </ul>
+</div>
+
+
+<div class="k_nForum_ReaderItems modeShort">
+
+<div class="k_nForum_ReaderItem  nForum_level0">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel0">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~executor</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel0">
+            <div class="k_commentHolder" id="attachment-127384528">
+
+                <span class="k_author">~executor :</span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~executor</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+									
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127384528,czytaj.html'">1. Zmniejszenie Sejmu do 96 Posłów. Kandydaci wybierani w wyborach bezpośrednich przez społeczeństwo a nie partie. 6 Posłow przypadnie na 1 województwo. Posłowie powoływani na 2-letnią kadencję, z możliwością wcześniejszego odwołania poprzez zebranie odpowiedniej liczby podpisów.<br>
+<br>
+2. Całkowita <span class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                  style="display: none;">likwidacja Senatu, bądź zmniejszenie do 16 Senatorów (po 1 na województwo). Urząd Senatora będzie trwał przez 3 lata. <br>
+<br>
+3. Pełna odpowiedzialność karna za podejmowane decyzje i nadużywanie władzy w celach osiągnięcia korzyści majątkowych.<br>
+<br>
+4. Przywrócenie kary śmierci dla seryjnych morderców. <br>
+<br>
+5. Rewizja majątków wszystkich osób pełniących funkcje publiczne w latach 1989 aż do dnia dzisiejszego.<br><span
+                                class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel0">
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;13:53</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">98%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>1 030</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							98%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							1%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127384528,czytaj.html">odpowiedzi:
+                27</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/1-zmniejszenie-sejmu-do-96-poslow-kandydaci-wybier,1102010,127384528,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/1-zmniejszenie-sejmu-do-96-poslow-kandydaci-wybier,1102010,127384528,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127384528">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127384528,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/1-zmniejszenie-sejmu-do-96-poslow-kandydaci-wybier,1102010,127384528,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/1-zmniejszenie-sejmu-do-96-poslow-kandydaci-wybier,1102010,127384528,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127384528">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127384528,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127384528,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem  nForum_level0">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel0">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Nam</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel0">
+            <div class="k_commentHolder" id="attachment-127378880">
+
+                <span class="k_author">~Nam :</span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Nam</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+									
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127378880,czytaj.html'">Jakim trzeba być odciętym od rzeczywistości człowiekiem, żeby uważać, że Polacy kupują stare samochody na złość ekologom i państwu? Ogromnie. Kupiłem stary samochód, bo nie stać mnie na nowszy, jednocześnie dojeżdżanie kilkadziesiąt kilometrów komunikacją publiczną nie zawsze jest realne, bo nie każ<span
+                        class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                       style="display: none;">dy może dopasować swoją pracę do godzin rozkładu jazdy.<br>
+<br>
+Obecnie wiele osób jeździ starymi samochodami duże odległości do pracy. Zablokowanie możliwości taniego dojazdu na własną rękę bez jednoczesnej możliwości dojeżdżania komunikacją (bo nie łudźmy się: przełomu w zwiększeniu pojazdów komunikacji publicznej nie będzie) spowoduje kolejne zwiększenie bezrobocia, rozbijanie rodzin z powodu kolejnych wyjazdów związanych z emigracją zarobkową.<br>
+<br>
+Tak może się to skończyć. Przestańmy udawać ekologów takimi zakazami. Bądźmy ekologami przez zachętę. Nie dowalajmy niezamożnym, bo ośmielili się też jeździć samochodami - przestańmy dowalać ceny paliw i nowych samochodów. Ludzie naprawdę nie kupują starych aut dla przyjemności i nie zarabiają tyle, co na zachodzie, by móc bez stresu wymieniać auto na nowe co parę lat.<span
+                            class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel0">
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;13:00</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">98%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>626</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							98%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							1%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127378880,czytaj.html">odpowiedzi:
+                11</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/jakim-trzeba-byc-odcietym-od-rzeczywistosci-czlowi,1102010,127378880,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/jakim-trzeba-byc-odcietym-od-rzeczywistosci-czlowi,1102010,127378880,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127378880">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127378880,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/jakim-trzeba-byc-odcietym-od-rzeczywistosci-czlowi,1102010,127378880,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/jakim-trzeba-byc-odcietym-od-rzeczywistosci-czlowi,1102010,127378880,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127378880">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127378880,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127378880,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem  nForum_level0">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel0">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Ted</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel0">
+            <div class="k_commentHolder" id="attachment-127387734">
+
+                <span class="k_author">~Ted :</span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Ted</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+									
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127387734,czytaj.html'">Panie ministrze !<br>
+ Najchętniej to społeczeństwo wymieniło by pana i pana kolesi na nowszych, młodszych o świeżym umyśle ludzi.<br>
+Panie ministrze!<br>
+ Jest pan głupi czy inaczej myślący?<br>
+Jeż<span class="read-more">... <a href="">rozwiń całość</a></span><span class="details" style="display: none;">eli będziesz pan chodził w starych spranych ciuchach ale dobrych ,to czy na pana trzeba nakładać podatek żebyś pan sobie kupił nowe ubranie,mimo ze pana nie stać na taki wydatek.<br>
+Panie ministrze!<br>
+ Ludzi nie trzeba przymuszać, tylko mądrze pomyśleć a to nie boli,nikt nie chce chodzić w starych ciuchach  i jezdzić starym autem.<br>
+Panie ministrze !<br>
+Wystarczy stworzyć odpowiednie warunki by gospodarka się rozwijała a ludzie zarabiali odpowiednie pieniądze .<br>
+Panie ministrze ! <br>
+Niech się pan uderzy młotkiem w głowę i idzie leczyć ,może myślenie się poprawi.<br><span class="re-collapse"> <a
+                                href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel0">
+
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;14:25</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">99%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>668</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							99%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							0%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127387734,czytaj.html">odpowiedzi:
+                8</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/panie-ministrze-najchetniej-to-spoleczenstwo-wymie,1102010,127387734,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/panie-ministrze-najchetniej-to-spoleczenstwo-wymie,1102010,127387734,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127387734">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387734,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/panie-ministrze-najchetniej-to-spoleczenstwo-wymie,1102010,127387734,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/panie-ministrze-najchetniej-to-spoleczenstwo-wymie,1102010,127387734,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127387734">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387734,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387734,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem  nForum_level0">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel0">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~myszkamiki</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel0">
+            <div class="k_commentHolder" id="attachment-127387789">
+
+                <span class="k_author">~myszkamiki :</span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~myszkamiki</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+									
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127387789,czytaj.html'">
+				Słyszę te słowa od złotoustego Donalda jak dziś :Mamy szuflady pełne ustaw  żeby Polakom żyło się lepiej wybudujemy się sieć autostrad a przy nich korty tenisowe, baseny dla podróżnych- cóż chyba ministrów Tuska albo Tuskobusów a co mamy Trzy miliony młodych na emigracji w tym moje dzieci i <span
+                        class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                       style="display: none;">moje wnuki których nie widzę w Polsce mojej ojczyznie. Nie tutaj pracuja i w przyszłoszci też nie tutaj będa zamieszkiwać bo w Obczyznie pozakładają rodziny i tam zostaną. Wysprzedaliście wszystko co żeśmy po wojnie zbudowali tracąc miejsca pracy dla Polaków, zdradziliście Polaków a za to należy się czapa
+				<span class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel0">
+
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;14:25</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">98%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>346</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							98%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							1%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127387789,czytaj.html">odpowiedzi:
+                5</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/slysze-te-slowa-od-zlotoustego-donalda-jak-dzis-ma,1102010,127387789,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/slysze-te-slowa-od-zlotoustego-donalda-jak-dzis-ma,1102010,127387789,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127387789">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387789,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/slysze-te-slowa-od-zlotoustego-donalda-jak-dzis-ma,1102010,127387789,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/slysze-te-slowa-od-zlotoustego-donalda-jak-dzis-ma,1102010,127387789,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127387789">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387789,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387789,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem  nForum_level0">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel0">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Tomisław</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel0">
+            <div class="k_commentHolder" id="attachment-127387289">
+
+                <span class="k_author">~Tomisław :</span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Tomisław</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+									
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127387289,czytaj.html'">
+				Średnia pensja wynosi 3 tyś zł, średnia cena nowego samochodu klasy średniej to ok 50 tyś zł. Z 3tyś opłacimy hipotekę, opłaty, zakup jedzenia, coś do ubrania, coś dziecku kupić i w najlepszym przypadku zostanie nam 300 zł czyli po 15 latach będzie nas stać na zakup nowego samochodu, ale <span
+                        class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                       style="display: none;">niestety już nie bądzie stać na ubezpieczenie OC i AC. A co z tą większoscią co nie zarabia nawet 2 tyś zł/mc ???? Dla wilu ludzi z małych miejscowosci czy wiosek zakup taniego używanego samochodu to jedyna możliwość dojazdu do pracy, nałożenie ich podatkiem może oznaczać nieopłacalność pracy, bo za dojazd do niej więcej się zapłaci niż się zarobi.
+				<span class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel0">
+
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;14:20</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">98%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>386</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							98%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							1%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127387289,czytaj.html">odpowiedzi:
+                4</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/srednia-pensja-wynosi-3-tys-zl-srednia-cena-nowego,1102010,127387289,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/srednia-pensja-wynosi-3-tys-zl-srednia-cena-nowego,1102010,127387289,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127387289">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387289,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/srednia-pensja-wynosi-3-tys-zl-srednia-cena-nowego,1102010,127387289,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/srednia-pensja-wynosi-3-tys-zl-srednia-cena-nowego,1102010,127387289,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127387289">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387289,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127387289,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem  nForum_level0">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel0">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~emigrant z NFR</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel0">
+            <div class="k_commentHolder" id="attachment-127399046">
+
+                <span class="k_author">~emigrant z NFR :</span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~emigrant z NFR</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+									
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127399046,czytaj.html'">
+				Piechocińskiemu już sodowa woda do głowy uderza. Zapomniał wół jak cilęciem był. To durni wyborcy wylansowali go na wyżyny. Teraz zapomniał o biednych i żyjących w ubóstwie. Kogo stać na nowe auta? Dziś robotnik u nowogogackiego chama i buraka nie zarobi więcej jak 1300 PLN. A minimalne <span
+                        class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                       style="display: none;">wynagrodzenie w  krajach zachodnich wynosi 1200 €. O tym nie można zapominać PSL-owski buraku. Najpierw trzeba dać ludziom zarobić a potem myśleć można o głupotach, by odmłodzić zmotoryzowanych. Tyle w temacie.
+				<span class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel0">
+
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;16:31</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">99%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>305</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							99%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							0%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127399046,czytaj.html">odpowiedzi:
+                3</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/piechocinskiemu-juz-sodowa-woda-do-glowy-uderza-za,1102010,127399046,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/piechocinskiemu-juz-sodowa-woda-do-glowy-uderza-za,1102010,127399046,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127399046">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127399046,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/piechocinskiemu-juz-sodowa-woda-do-glowy-uderza-za,1102010,127399046,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/piechocinskiemu-juz-sodowa-woda-do-glowy-uderza-za,1102010,127399046,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127399046">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127399046,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127399046,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem k_nForum_Child  newLevel  nForum_level1">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel1">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~------------------------Aga---------------------------</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel1">
+            <div class="k_commentHolder" id="attachment-127412248">
+
+                <span class="k_author">~------------------------Aga--------------------------- </span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~------------------------Aga---------------------------</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+
+                do
+                <span class="k_parentAuthor">~Nam:</span>
+
+                <div class="k_parentNickTooltipHolder nForumTooltip">
+                    <div class="k_userInfoContainer">
+                        <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                        <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Nam</span></span>
+                        <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+                    </div>
+                    <div class="k_noteInfoContainer">
+                        <span class="k_noteInfo">dzisiaj&nbsp;13:00 użytkownik <span
+                                class="k_nForumUserNickNormal">~Nam </span>napisał:</span>
+
+                        <div class="k_noteDetail">
+                            <span class="k_noteLead">Jakim trzeba być odciętym od rzeczywistości człowiekiem, żeby uważać, że Polacy kupują stare samochody na złość ekologom i państwu? Ogromnie. Kupiłem stary samochód, bo nie stać mnie na nowszy, jednocześnie dojeżdżanie kilkadziesiąt kilometrów komunikacją</span>
+                        </div>
+                        <div class="k_noteHref"><a rel="nofollow"
+                                                   href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127378880,czytaj.html">przejdź
+                            do komentarza »</a></div>
+                    </div>
+                    <div class="k_forumClear"></div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+										
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127412248,czytaj.html'">
+				Przecież to są jakieś bezmózgi oderwane od rzeczywistości. Czasami mi się wydaje, że oni pija na umór, albo ćpają, bo takie rzeczy to może wymyślić tylko jakiś kompletny ignorant, albo skończony debil. Przykład - minister pracy, niejaki Kamysz założył portal dla bezdomnych (rozumiesz - <span
+                        class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                       style="display: none;">BEZDOMNYCH!)  i utopił 50 milionów złotych!!! Widział ktoś bezdomnego z laptopem i dostępem do Internetu! Oni myślą, że bezdomny to taki hipster, który sprzeciwia się wszelkim ograniczeniom i postanowił żyć sobie wolnym i niezależnym!
+				<span class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel1">
+
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;19:01</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">100%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>85</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							100%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							0%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127412248,czytaj.html">odpowiedzi:
+                2</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/przeciez-to-sa-jakies-bezmozgi-oderwane-od-rzeczyw,1102010,127412248,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/przeciez-to-sa-jakies-bezmozgi-oderwane-od-rzeczyw,1102010,127412248,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127412248">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127412248,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/przeciez-to-sa-jakies-bezmozgi-oderwane-od-rzeczyw,1102010,127412248,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/przeciez-to-sa-jakies-bezmozgi-oderwane-od-rzeczyw,1102010,127412248,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127412248">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127412248,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127412248,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem  newLevel  nForum_level0">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel0">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~pytalski</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel0">
+            <div class="k_commentHolder" id="attachment-127408835">
+
+                <span class="k_author">~pytalski :</span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~pytalski</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+									
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127408835,czytaj.html'">1. Dlaczego obciążeni tym podatkiem (opłata ekologiczna) mają być tylko właściciele samochodów osobowych?<br>
+2. Kto z MG wykaże, że fabrycznie nowe auto osobowe, robiące rocznie 45 tys. km jest bardziej ekologiczne niż 12 letnie auto osobowe robiące rocznie 5 tys. km?<br>
+3. Kto z MG wykaże bardziej <span class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                                 style="display: none;">ekologiczny wpływ ciężarówek, autobusów na środowisko niż 12 letnie auto osobowe robiące powiedzmy 15 tys. km rocznie?<br>
+4. Kto z MG policzył, ile państwo STRACI na zmniejszonych wpływach z podatków od warsztatów samochodowych, stacji benzynowych itp. ?<br>
+5. Czy spadek wpływów z podatków nazwijmy je "samochodowych" (a wpływy BĘDĄ mniejsze) nie będzie wymagał wzrostu bezpośrednich obciążeń podatkowych wszystkich Polaków?<br>
+6.  Co będzie z osobami, dla których samochód osobowy jest narzędziem pracy?<br>
+7. O ile wzrosną ceny usług świadczonych przez osoby wykorzystujące samochód osobowy do pracy?<br>
+8. O ile wzrośnie inflacja?<br><span class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel0">
+
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;18:21</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">100%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>83</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							100%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							0%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127408835,czytaj.html">odpowiedzi:
+                1</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/1-dlaczego-obciazeni-tym-podatkiem-oplata-ekologic,1102010,127408835,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/1-dlaczego-obciazeni-tym-podatkiem-oplata-ekologic,1102010,127408835,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127408835">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127408835,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/1-dlaczego-obciazeni-tym-podatkiem-oplata-ekologic,1102010,127408835,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/1-dlaczego-obciazeni-tym-podatkiem-oplata-ekologic,1102010,127408835,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127408835">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127408835,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127408835,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem  nForum_level0">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel0">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~szok</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel0">
+            <div class="k_commentHolder" id="attachment-127406675">
+
+                <span class="k_author">~szok :</span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~szok</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+									
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127406675,czytaj.html'">
+				Piechociński twoje głupie tłumaczenie jest tak usprawiedliwione jak najazd ruskich na Krym<br>
+Pierwsze co sobie pomyślałem po przeczytaniu artykułu to eksperci  do debaty zostali dobrani idealnie, poprostu wszystkim zależeć będzie na tym durnym POmyśle, druga myśl to to, że trzeba sprzedać auto <span
+                        class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                       style="display: none;">bo na wysoki POdatek buraka mnie nie stać a na kupno nowego samochodu tym bardziej i ostatnia ale najważniejsza myśl to ta, że na partię rządzącą PO i PSL to na pewno nie zagłosuję, nie zagłosuje moja rodzina i wszyscy moi znajomi. Piechociński powoli pakuj manatki
+				<span class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel0">
+
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;17:58</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">100%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>122</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							100%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							0%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127406675,czytaj.html">odpowiedzi:
+                1</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/piechocinski-twoje-glupie-tlumaczenie-jest-tak-usp,1102010,127406675,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/piechocinski-twoje-glupie-tlumaczenie-jest-tak-usp,1102010,127406675,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127406675">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127406675,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/piechocinski-twoje-glupie-tlumaczenie-jest-tak-usp,1102010,127406675,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/piechocinski-twoje-glupie-tlumaczenie-jest-tak-usp,1102010,127406675,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127406675">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127406675,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127406675,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="k_nForum_ReaderItem k_nForum_Child  newLevel  nForum_level1">
+
+
+    <div class="k_nForum_readerAvatar k_nForum_readerAvatarLevel1">
+        <div class="k_avatarHolder">
+            <canvas width="36" height="36" style="width: 36px; height: 36px;"></canvas>
+        </div>
+        <div class="k_avatarTooltipHolder nForumTooltip">
+            <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+            <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Szandor</span></span>
+            <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+            <div class="k_tooltipClose"></div>
+            <div class="k_tooltipHandler"></div>
+        </div>
+    </div>
+
+    <div class="k_nForum_ReaderContentFrame">
+
+
+        <div class="k_nForum_readerNote k_nForum_readerLevel1">
+            <div class="k_commentHolder" id="attachment-127386833">
+
+                <span class="k_author">~Szandor </span>
+
+                <div class="k_nickTooltipHolder nForumTooltip">
+                    <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                    <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~Szandor</span></span>
+                    <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+
+                do
+                <span class="k_parentAuthor">~obiekt:</span>
+
+                <div class="k_parentNickTooltipHolder nForumTooltip">
+                    <div class="k_userInfoContainer">
+                        <canvas width="150" height="150" style="width: 150px; height: 150px;"></canvas>
+
+
+                        <span class="k_tooltipUsername"><span class="k_nForumUserNickStrong">~obiekt</span></span>
+                        <span class="k_tooltipAnonymous">Użytkownik anonimowy</span>
+                    </div>
+                    <div class="k_noteInfoContainer">
+                        <span class="k_noteInfo">dzisiaj&nbsp;09:25 użytkownik <span class="k_nForumUserNickNormal">~obiekt </span>napisał:</span>
+
+                        <div class="k_noteDetail">
+							<span class="k_noteLead">To czy samochód jest ekologiczny czy nie świadczy jego stan i pomiary <br>
+spalin a nie wiek szkoda ,że ten niby minister o tym nie wie . Ja mam golfa z 2002 roku <br>
+z instalacją gazową BRC i analiza spalin pokazuje ,żew zanieczyszcza środowisko w mniejszym sto</span>
+                        </div>
+                        <div class="k_noteHref"><a rel="nofollow"
+                                                   href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127359041,czytaj.html">przejdź
+                            do komentarza »</a></div>
+                    </div>
+                    <div class="k_forumClear"></div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+										
+			
+							
+				<span class="k_content k_contentLink"
+                      onclick="window.location.href='/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127386833,czytaj.html'">
+				Jeszcze jakiś czas temu myślałem o tym, by sprawić sobie w rodzinie drugie, małe autko miejskie. Dwa auta czasem się przydają, jedno trochę większe na dłuższe wyjazdy, drugie jako auto na zakupy, jazdy po mieście i ewentualny zapas, gdybyśmy z żoną potrzebowali w tym samym czasie jechać w róż<span
+                        class="read-more">... <a href="">rozwiń całość</a></span><span class="details"
+                                                                                       style="display: none;">ne strony coś załatwić. Gdybym kupił drugiego używanego malucha, zapłaciłbym państwu 2% podatku PCC, następnie musiałbym wykupić ubezpieczenie, po czym kupowałbym paliwo i płacił podatki w nim zawarte. Ale naszemu państwu to się nie podoba, bo nasze państwo jest zdecydowanie bardziej zachłanne. Ja już zrezygnowałem z myśli o kupnie drugiego samochodu. Z tego tytułu państwo nic nie dostanie.
+				<span class="re-collapse"> <a href="#">zwiń</a></span></span></span>
+						
+			
+			
+							<span class="attachmentsData">
+
+				</span>
+            </div>
+
+        </div>
+
+
+        <div class="k_nForum_readerTools k_nForum_readerToolsLevel1">
+
+
+            <div class="k_nForum_CommentInfo">
+                <span>dzisiaj&nbsp;14:16</span>
+                <span> | ocena:</span>
+                <a rel="nofollow" class="k_nForum_Mark k_nForum_MarkUpIco " href="#mark">98%</a>
+
+                <div class="k_nForum_MarkTipHolder">
+                    <div class="k_nForum_MarkTipCount">Liczba głosów:<span>179</span></div>
+                    <div class="k_nForum_MarkTipHands">
+                        <div class="k_nForum_MarkTipUp">
+                            <span class="k_nForum_MarkTipUpIco"></span>
+						<span class="k_nForum_MarkTipUpPercent">
+							98%
+						</span>
+                        </div>
+                        <div class="k_nForum_MarkTipDown">
+                            <span class="k_nForum_MarkTipDownIco"></span>
+						<span class="k_nForum_MarkTipDownPercent">
+							1%
+						</span>
+                        </div>
+                    </div>
+                    <div class="k_tooltipClose"></div>
+                    <div class="k_tooltipHandler"></div>
+                </div>
+                | <a rel="nofollow"
+                     href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,0,1102010,127386833,czytaj.html">odpowiedzi:
+                1</a>
+            </div>
+            <div class="k_nForum_Actions">
+                <span class="k_nForum_MoreActionsDown"></span>
+                <ul class="k_nForum_MoreActionsTipHolder">
+                    <li class="k_nForum_MoreActionsAbuse">
+
+                        <a rel="nofollow"
+                           href="/forum/jeszcze-jakis-czas-temu-myslalem-o-tym-by-sprawic-,1102010,127386833,zglos-naruszenie.html"
+                           target="_blank"
+                           onclick="OF.Tools.abuseOpen('/forum/jeszcze-jakis-czas-temu-myslalem-o-tym-by-sprawic-,1102010,127386833,zglos-naruszenie.html');return false;">Zgłoś
+                            naruszenie</a>
+                    </li>
+                    <li class="k_nForum_MoreActionsShareInfo">
+                        Podziel się:
+                    </li>
+                    <li class="k_nForum_MoreActionsShare">
+                        <a rel="nofollow" href="#share"><span class="linkIcon"></span>&nbsp;Link</a>
+                    </li>
+                    <li class="k_nForum_AddThisContainer" id="addT_127386833">
+                        <span class="hid_data" style="display:none;">/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127386833,czytaj.html</span>
+
+                    </li>
+                </ul>
+
+
+                <a rel="nofollow" class="k_nForum_MoreAction"
+                   href="/forum/jeszcze-jakis-czas-temu-myslalem-o-tym-by-sprawic-,1102010,127386833,odpowiedz.html"
+                   target="_blank" onclick="							OF.Tools.commentatorOpen('/forum/jeszcze-jakis-czas-temu-myslalem-o-tym-by-sprawic-,1102010,127386833,odpowiedz.html','');return false;
+						">
+                    odpowiedz
+                </a>
+					
+					
+													<span class="k_nForum_MoreAction k_nForum_Vote" id="note-127386833">
+						<span class="k_nForum_VoteTipDesc">oceń: </span>
+						<a rel="nofollow" class="k_nForum_VoteTipDown k_nForum_MarkDownIco">-1</a>
+						<a rel="nofollow" class="k_nForum_VoteTipUp k_nForum_MarkUpIco">+1</a>
+					</span>
+            </div>
+
+            <div class="k_nForum_ShareTipHolder">
+                <div class="k_nForum_ShareTipTitle">Link do tego komentarza:</div>
+                <input class="k_nForum_ShareTipLink" readonly="readonly"
+                       value="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127386833,czytaj.html">
+
+                <div class="k_nForum_ShareTipDesc">
+                    <a rel="nofollow" class="k_nForum_ShareTipGo"
+                       href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,1,1102010,127386833,czytaj.html">Przejdź
+                        do komentarza</a>
+                </div>
+                <div class="k_tooltipClose"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="k_nForum_ReaderFooter">
+    <div class="k_nForum_ReaderShortHeader">
+        <a rel="nofollow" class="k_makeComment"
+           href="/forum/podatek-ekologiczny-zmusi-polakow-do-kupowania-now,2,1102010,0,czytaj-najnowsze.html">Zobacz
+            wszystkie komentarze »</a>
+    </div>
+
+</div>
+
+</div>
+<div id="addthis-root"></div>
+
+
+</div>
