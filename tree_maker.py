@@ -1,6 +1,6 @@
 __author__ = 'Tomasz Godzik'
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 #html_doc = open("html_data/katowice.html").read()
 
