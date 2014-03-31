@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 
+
 def strip(html_doc):
     soup = BeautifulSoup(html_doc)
     # strip head
@@ -10,22 +11,20 @@ def strip(html_doc):
     return body
 
 
+# we need to find by having text and if the length of text does not equal sum of length of children texts then that is the largest possible node text
 def break_up(input):
-
     blocks = []
 
     def go_down(tag):
-        children = [i for i in tag.children]
-        if len(children) == 0:
-            print tag
-        else:
-            for i in children:
-                go_down(i)
+        if hasattr(tag, 'children'):
+            children = [j for j in tag.children]
+            if len(children) == 1 and len(tag.text) > 0:
+                blocks.append(tag)
+            else:
+                for i in tag.children:
+                    if hasattr(i, 'text') and len(i.text) > 0:
+                        go_down(i)
 
-    # mark segments and return list
-    #for i in input.contents:
-    #    print i
-    #print input.contents
     go_down(input)
     return blocks
 
@@ -37,4 +36,6 @@ def prepare(page):
 
 
 doc = open("../../pages/page1.html").read()
-prepare(doc)
+for i in prepare(doc):
+    print i
+    print "-----------------------------------------------"
