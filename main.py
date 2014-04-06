@@ -1,18 +1,11 @@
 
 # functionalize it
-from segmentation.metrics import simple
+from segmentation import block_fusion
 
-refJson = """
-{"page1" : ["aaaaaaaaaaaaa", "bbbb", "cccc"]}
-"""
 
-testJson = """
-{"page1" : ["aaaaaaaaaaaaaa","bbbbcccc"]}
-"""
+if __name__ == "__main__":
 
-testJson2 = """
-{"page1" : ["aa","aa","bb","bb","cc","cc"]}
-"""
-
-for i in simple.index(refJson, testJson):
-    print i
+    checked = block_fusion.segment(["./pages/page1.html"], treshold=10.0)[0]
+    print len(checked)
+    #for i in checked:
+    #    print i

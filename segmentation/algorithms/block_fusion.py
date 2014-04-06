@@ -1,86 +1,80 @@
 __author__ = 'Tomasz Godzik'
+# -*- coding: utf-8 -*-
 
-from bs4 import BeautifulSoup
-from bs4 import NavigableString
 import re
-
-html_doc = open("html_data/katowice.html").read()
-
-soup = BeautifulSoup(html_doc)
-
-max_line = 80
-treshold = 1.5
-#for link in soup.find_all('a'):
-#    print(link.get('href'))
-
-for i in soup.find_all('script'):
-    i.decompose()
+import segmentation.structure.preproccess as pre
 
 
-def strip_tags(bsoup, tag_names):
-    for tag in bsoup.find_all():
-        if tag.name in tag_names:
-            s = tag.text
-            tag.replaceWith(s)
+class Segment:
+    def __init__(self, tag):
+        self.tags = [tag]
+        self.simplify()
+        self.density = self.calculate_density()
 
-    return bsoup
+    def __add__(self, other):
+        self.tags.extend(other.tags)
+        self.calculate_density()
+        return self
 
+    def __sub__(self, other):
+        return abs(self.density - other.density)
 
-regexp = "[a-zA-Z0-9ąęółśżźćńĘĄŁÓŚŻŹĆŃ]+"
+    def simplify(self):
+        parent = self.tags[0].parent
 
-soup = strip_tags(soup, ['a', 'br', 'b'])
-#f = open("tmp.txt", "w")
-#f.write(soup.prettify())
-#f.close()
+        if len(self.tags) == len(parent.find_all()):
+            self.tags = [parent]
+            self.simplify()
 
+    def __str__(self):
+        return "".join([str(i) for i in self.tags])
 
-def density(text):
-    sum_len = len(text)
-    lines = int(sum_len / max_line)
-    # reduce(lambda x, y: len(x) + len(y), b)+len(b)-1
-    if lines > 0:
-        r = max_line * lines
-        reduced_text = text[0:r]
-        found = re.findall(regexp, reduced_text, re.UNICODE)
-        return len(found) / lines
-    else:
-        found = re.findall(regexp, text, re.UNICODE)
-        return len(found)
-
-
-blocks = []
-#Trzeba zmienić by nie tylko prosto sprawdzał czy ma dzieci, to nie działa, bo są czasem w tekście a.
-#Pewnie trzeba będzie przeparsować.
-for i in soup.find_all():
-    if len(i.text) > 0:
-        children = i.findChild()
-        if not children:
-            tmp = i.text
-            tmp = re.sub("[\s]+", " ", tmp)
-            if len(tmp) > 1:
-                #print(tmp, " : " + str(density(tmp)))
-                blocks.append((tmp, density(tmp)))
+    def calculate_density(self, max_line=80):
+        text = "".join([i.text for i in self.tags])
+        regexp = "[a-zA-Z0-9ąęółśżźćńĘĄŁÓŚŻŹĆŃ]+"
+        sum_len = len(text)
+        lines = int(sum_len / max_line)
+        if lines > 0:
+            r = max_line * lines
+            reduced_text = text[0:r]
+            found = re.findall(regexp, reduced_text, re.UNICODE)
+            return len(found) / lines
+        else:
+            found = re.findall(regexp, text, re.UNICODE)
+            return len(found)
 
 
-change = True
+def segment(names, treshold=1.5):
 
+    ret_list = []
+    for name in names:
+        html_doc = open(name).read()
+        segs = pre.prepare(html_doc)
+        blocks = []
 
-def join(a, b):
-    tmp = a[0] + " " + b[0]
-    return tmp, density(tmp)
+        for i in segs:
+            blocks.append(Segment(i))
 
+        change = True
 
-while change:
-    change = False
-    i = 0
-    while i < (len(blocks)-2):
-        if blocks[i][1] - blocks[i+1][1] < treshold:
-            joined = join(blocks[i], blocks[i+1])
-            blocks.remove(blocks[i])
-            blocks.remove(blocks[i+1])
-            blocks.append(joined)
-            change = True
-        i += 1
+        while change:
+            change = False
+            new_blocks = []
+            for i in range(0, len(blocks) - 1):
+                if blocks[i] and blocks[i] - blocks[i+1] < treshold:
+                    new = blocks[i] + blocks[i+1]
+                    new.simplify()
+                    new_blocks.append(new)
+                    change = True
+                    blocks[i] = None
+                    blocks[i + 1] = None
+                elif blocks[i]:
+                    new_blocks.append(blocks[i])
+            if change:
+                if blocks[-1]:
+                    new_blocks.append(blocks[-1])
+                blocks = new_blocks
 
-for b in blocks:
-    print(b)
+        ret_list.append(blocks)
+
+    return ret_list

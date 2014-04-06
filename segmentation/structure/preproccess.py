@@ -3,30 +3,33 @@ import re
 
 
 def strip(html_doc):
-    soup = BeautifulSoup(html_doc)
+    doc = re.sub("[\s]+", " ", html_doc)
+    soup = BeautifulSoup(doc)
     # strip head
     body = soup.find("body")
-    for i in body.find_all('script'):
-        i.decompose()
+    for s in body.find_all('script'):
+        s.decompose()
     return body
 
 
-# we need to find by having text and if the length of text does not equal sum of length of children texts then that is the largest possible node text
-def break_up(input):
-    blocks = []
+def break_up(page):
 
-    def go_down(tag):
+    # tags that could be segments
+    segment_tags = {"div", "head", "table", "center", "body", "section", "p"}
+
+    def search(tag):
         if hasattr(tag, 'children'):
-            children = [j for j in tag.children]
-            if len(children) == 1 and len(tag.text) > 0:
-                blocks.append(tag)
+            children = {c.name for c in tag.children}
+            if len(segment_tags & children) == 0:
+                return [tag]
             else:
-                for i in tag.children:
-                    if hasattr(i, 'text') and len(i.text) > 0:
-                        go_down(i)
+                ret_list = []
+                for c in tag.children:
+                    if c.name in segment_tags:
+                        ret_list.extend(search(c))
+                return ret_list
 
-    go_down(input)
-    return blocks
+    return search(page)
 
 
 def prepare(page):
@@ -35,7 +38,3 @@ def prepare(page):
     return broken
 
 
-doc = open("../../pages/page1.html").read()
-for i in prepare(doc):
-    print i
-    print "-----------------------------------------------"
