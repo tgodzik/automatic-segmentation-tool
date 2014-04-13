@@ -3,8 +3,8 @@
 import json
 import re
 
-html = "pages/segments3.html"
-jsonname = "pages/segments3.json"
+html = "pages/segments10.html"
+jsonname = "refrence/segments10.json"
 
 htmlfile = open(html)
 
