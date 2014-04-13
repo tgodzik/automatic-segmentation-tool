@@ -17,6 +17,8 @@ class Segment:
         return self
 
     def __sub__(self, other):
+        if self.density == 0.0 or other.density == 0.0:
+            return 0.0
         return abs(self.density - other.density)
 
     def simplify(self):

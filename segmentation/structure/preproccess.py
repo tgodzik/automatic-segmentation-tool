@@ -9,13 +9,19 @@ def strip(html_doc):
     body = soup.find("body")
     for s in body.find_all('script'):
         s.decompose()
+    for s in body.find_all('noscript'):
+        s.decompose()
+    for s in body.find_all('link'):
+        s.decompose()
+    for s in body.find_all('iframe'):
+        s.decompose()
     return body
 
 
 def break_up(page):
 
     # tags that could be segments
-    segment_tags = {"div", "head", "table", "center", "body", "section", "p"}
+    segment_tags = {"div", "head", "table", "center", "body", "section", "p", "span", "ul"}
 
     def search(tag):
         if hasattr(tag, 'children'):
