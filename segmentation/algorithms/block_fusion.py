@@ -13,7 +13,7 @@ class Segment:
 
     def __add__(self, other):
         self.tags.extend(other.tags)
-        self.calculate_density()
+        self.density = self.calculate_density()
         return self
 
     def __sub__(self, other):
@@ -40,10 +40,10 @@ class Segment:
             r = max_line * lines
             reduced_text = text[0:r]
             found = re.findall(regexp, reduced_text, re.UNICODE)
-            return len(found) / lines
+            return float(len(found)) / float(lines)
         else:
             found = re.findall(regexp, text, re.UNICODE)
-            return len(found)
+            return float(len(found))
 
 
 def segment(names, treshold=1.5):
@@ -57,6 +57,8 @@ def segment(names, treshold=1.5):
         for i in segs:
             blocks.append(Segment(i))
 
+        #for i in blocks:
+        #    print i.density
         change = True
 
         while change:

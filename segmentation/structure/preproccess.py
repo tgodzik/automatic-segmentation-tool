@@ -5,15 +5,11 @@ import re
 def strip(html_doc):
     doc = re.sub("[\s]+", " ", html_doc)
     soup = BeautifulSoup(doc)
+    stripped = ["script", "noscript", "link", "iframe"]
+
     # strip head
     body = soup.find("body")
-    for s in body.find_all('script'):
-        s.decompose()
-    for s in body.find_all('noscript'):
-        s.decompose()
-    for s in body.find_all('link'):
-        s.decompose()
-    for s in body.find_all('iframe'):
+    for s in body.find_all(stripped):
         s.decompose()
     return body
 
@@ -21,7 +17,7 @@ def strip(html_doc):
 def break_up(page):
 
     # tags that could be segments
-    segment_tags = {"div", "head", "table", "center", "body", "section", "p", "span", "ul"}
+    segment_tags = {"div", "head", "table", "center", "body", "section", "p", "span", "ul", "li"}
 
     def search(tag):
         if hasattr(tag, 'children'):
