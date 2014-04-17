@@ -4,7 +4,7 @@ import json
 import re
 
 html = "pages/segments10.html"
-jsonname = "refrence/segments10.json"
+jsonname = "reference/segments10.json"
 
 htmlfile = open(html)
 

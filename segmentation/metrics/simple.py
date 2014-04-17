@@ -7,20 +7,17 @@ import json
 
 def belong(segment, ref_segments, tolerance=0.1):
     """
-    Checks if a segment is in list of refrence segments.
+    Checks if a segment is in list of reference segments.
     Value is 0 or 1
     """
     segment_len = len(segment)
     distances = [float(distance(i, segment)) for i in ref_segments]
-    return min(distances) - tolerance*segment_len < 0.0
+    return min(distances) - tolerance * segment_len < 0.0
 
 
-def index(refrence, compared):
+def index(segmented, refrence):
     """
-    Returns similarity index between pages metrics.
+    Returns similarity index between pages
     """
-    ref = json.loads(refrence)
-    test = json.loads(compared)
-    for page in ref.keys():
-        measured_page = [belong(segment, ref[page]) for segment in test[page]]
-        yield sum(measured_page)/ float( len(measured_page) + len(ref[page]) - sum(measured_page))
+    measured_page = [belong(segment, refrence) for segment in segmented]
+    return sum(measured_page) / float(len(segmented) + len(refrence) - sum(measured_page))
