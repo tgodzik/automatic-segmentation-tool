@@ -7,7 +7,7 @@ import json
 def algorithm_block_fusion(numbers):
     numbers = map(str, numbers)
 
-    files = ["./pages/page"+num+".html" for num in numbers]
+    files = [open("./pages/page"+num+".html").read() for num in numbers]
 
     print "Analyzing files " + ",".join(numbers)
 

@@ -19,7 +19,7 @@ class Segment:
     def __sub__(self, other):
         if self.density == 0.0 or other.density == 0.0:
             return 0.0
-        return abs(self.density - other.density)
+        return abs(self.density - other.density) / max(self.density, other.density)
 
     def simplify(self):
         parent = self.tags[0].parent
@@ -46,19 +46,17 @@ class Segment:
             return float(len(found))
 
 
-def segment(names, treshold=1.5):
+# TODO rather than names take documents
+def segment(html_docs, treshold=1.5):
 
     ret_list = []
-    for name in names:
-        html_doc = open(name).read()
+    for html_doc in html_docs:
         segs = pre.prepare(html_doc)
         blocks = []
 
         for i in segs:
             blocks.append(Segment(i))
 
-        #for i in blocks:
-        #    print i.density
         change = True
 
         while change:
