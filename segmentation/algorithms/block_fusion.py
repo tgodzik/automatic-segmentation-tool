@@ -2,10 +2,17 @@ __author__ = 'Tomasz Godzik'
 # -*- coding: utf-8 -*-
 
 import re
-import segmentation.structure.preproccess as pre
+from segmentation.structure.preproccess import prepare
+from segmentation.metrics.measurement import measure
+from segmentation.visualize.visual_blocks import visualize
+import json
+import logging
 
 
 class Segment:
+    """Class representing a single segment.
+    """
+
     def __init__(self, tag):
         self.tags = [tag]
         self.simplify()
@@ -46,12 +53,18 @@ class Segment:
             return float(len(found))
 
 
-# TODO rather than names take documents
-def segment(html_docs, treshold=1.5):
+def segment(html_docs, treshold):
+    """ Function responsible for segmentation
+    :param html_docs list of html docs to be segmented
+    :param treshold join threshold
+    :returns list of pages' segments
+
+    """
 
     ret_list = []
+
     for html_doc in html_docs:
-        segs = pre.prepare(html_doc)
+        segs = prepare(html_doc)
         blocks = []
 
         for i in segs:
@@ -80,3 +93,40 @@ def segment(html_docs, treshold=1.5):
         ret_list.append(blocks)
 
     return ret_list
+
+
+def algorithm(files, is_measured=False, visualized=False, verbose=True, treshold=0.5):
+    """  Main algorithm
+    :param files list of tuples for measuring the performance of simple list of names
+
+    """
+
+    #open all needed files
+    pages = [open(f[0]).read() for f in files] if is_measured else [open(f).read() for f in files]
+
+    if verbose:
+        logging.info("Analyzing files " + ",".join(files))
+
+    #use segmentation
+    checked = segment(pages, treshold)
+
+    #measure
+    if is_measured:
+        # open refrence pages
+        ref = [json.load(open(f[1])) for f in files]
+
+        to_check = [map(lambda x: str(x).decode('utf-8'), i) for i in checked]
+
+        if verbose:
+            logging.info("Measuring performance")
+
+        for i in range(0, len(ref)):
+            results = measure([0, 1], ref[i], to_check[i])
+            if verbose:
+                logging.info(str(files[i]) + " - " + str(results))
+
+    #visualize
+    if visualized:
+        visualize(checked[0])
+
+    return checked
