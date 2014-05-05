@@ -4,22 +4,24 @@ def find_root(segment):
             return parent
 
 
-def visualize(segments):
+def visualize(segments, name):
     root = find_root(segments[0].tags[0])
     soup = root.parent
     for i in segments:
         par = i.tags[0].parent
+        chs = [c for c in par.children]
 
-        new_tag = soup.new_tag("div", style="border:1px solid #000000;")
-        par.append(new_tag)
+        new_tag = soup.new_tag("div", style="border:4px solid #000000;")
+
+        par.insert(chs.index(i.tags[0]), new_tag)
 
         for j in i.tags:
-            new_tag.append(j.extract())
+            new_tag.insert(0,j.extract())
 
-    output_file = open("result.html", "w")
+    output_file = open(name, "w")
     output_file.write(root.prettify().encode("utf8"))
 
     import webbrowser
 
-    url = "result.html"
+    url = name
     webbrowser.open(url, new=2)
