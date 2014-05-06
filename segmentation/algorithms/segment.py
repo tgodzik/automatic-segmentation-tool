@@ -51,7 +51,7 @@ class DensitySegment(Segment):
 
     def calculate_density(self, max_line=80):
         text = "".join([i.text for i in self.tags])
-        regexp = "[a-zA-Z0-9ąęółśżźćńĘĄŁÓŚŻŹĆŃ]+"
+        regexp = "[\w\d]+"
         sum_len = len(text)
         lines = int(sum_len / max_line)
         if lines > 0:

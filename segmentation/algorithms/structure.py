@@ -1,8 +1,10 @@
-from bs4 import BeautifulSoup
 import re
 import json
+
+from bs4 import BeautifulSoup
+
 from segmentation.metrics.measurement import measure
-from segmentation.visualize.visual_blocks import visualize
+from segmentation.metrics.visual_blocks import visualize
 
 
 def strip(html_doc):

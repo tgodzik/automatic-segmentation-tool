@@ -6,7 +6,8 @@ from bs4 import element
 
 from segmentation.algorithms.structure import strip, algorithm
 from .segment import TreeSegment
-from Levenshtein import distance
+from .cosine import cosine_similarity
+
 
 def simple_cost(a, b, gap_score=1):
     """Simple cost of aligments
@@ -135,14 +136,14 @@ def dual_search(root1, root2, acc1, acc2):
 
         #arr, _ = sequence_sim(seq1, seq2)
         for i in range(0, len(seq1)):
-            # find that this is very similar
-            #if seq1[i] == 0 or seq2[i] == 0:
-            #    acc1.append(TreeSegment(chs1[i]))
-            #    acc2.append(TreeSegment(chs2[i]))
-            #elif len(chs1[i]) - len(chs2[i]) < 0.1 * min(len(chs2[i]), len(chs1[i])):
-            #    acc1.append(TreeSegment(chs1[i]))
-            #    acc2.append(TreeSegment(chs2[i]))
-            if seq1[i] == seq2[i]:
+            # @TODO maybe use cosine to find out if something is very different
+            if seq1[i] == 0 or seq2[i] == 0:
+                acc1.append(TreeSegment(chs1[i]))
+                acc2.append(TreeSegment(chs2[i]))
+            elif cosine_similarity(str(chs1[i]), str(chs2[i])) > 0.9:
+                acc1.append(TreeSegment(chs1[i]))
+                acc2.append(TreeSegment(chs2[i]))
+            elif seq1[i] == seq2[i]:
                 dual_search(chs1[i], chs2[i], acc1, acc2)
             else:
                 acc1.append(TreeSegment(chs1[i]))

@@ -11,7 +11,7 @@ def visualize(segments, name):
         par = i.tags[0].parent
         chs = [c for c in par.children]
 
-        new_tag = soup.new_tag("div", style="border:4px solid #000000;")
+        new_tag = soup.new_tag("div", style="border:4px solid #FF00FF !important;")
 
         par.insert(chs.index(i.tags[0]), new_tag)
 

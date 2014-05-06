@@ -1,4 +1,4 @@
-from Levenshtein import distance
+from segmentation.algorithms.cosine import cosine_similarity
 
 
 # TODO change metric not to include whitespace
@@ -8,9 +8,8 @@ def belong(segment, ref_segments):
     Checks if a segment is in list of reference segments.
     Value is between 0 and 1
     """
-    segment_len = len(segment)
-    distances = [float(distance(i, segment)) for i in ref_segments]
-    return 1.0 - min(min(distances)/segment_len, 1.0)
+    similarities = [cosine_similarity(i, segment) for i in ref_segments]
+    return max(similarities)
 
 
 def index(segmented, refrence):
