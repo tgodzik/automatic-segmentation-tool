@@ -1,7 +1,7 @@
 from segmentation.algorithms.cosine import cosine_similarity
 
 
-# TODO change metric not to include whitespace
+# @TODO check why the tree algorithm gives zeroes
 
 def belong(segment, ref_segments):
     """

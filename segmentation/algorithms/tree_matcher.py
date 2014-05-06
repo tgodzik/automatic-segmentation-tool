@@ -121,7 +121,7 @@ def search(root, acc, level=0):
         return acc
 
 
-def dual_search(root1, root2, acc1, acc2):
+def dual_search(root1, root2, acc1, acc2, treshold):
     if hasattr(root1, "children") and hasattr(root2, "children"):
         chs1 = filter(lambda x: isinstance(x, element.Tag), [i for i in root1.children])
         chs2 = filter(lambda x: isinstance(x, element.Tag), [i for i in root2.children])
@@ -140,7 +140,7 @@ def dual_search(root1, root2, acc1, acc2):
             if seq1[i] == 0 or seq2[i] == 0:
                 acc1.append(TreeSegment(chs1[i]))
                 acc2.append(TreeSegment(chs2[i]))
-            elif cosine_similarity(str(chs1[i]), str(chs2[i])) > 0.9:
+            elif cosine_similarity(str(chs1[i]), str(chs2[i])) > treshold:
                 acc1.append(TreeSegment(chs1[i]))
                 acc2.append(TreeSegment(chs2[i]))
             elif seq1[i] == seq2[i]:
@@ -168,7 +168,7 @@ def analyze(tree1, tree2):
         #    if
 
 
-def tree_segmentation(html_docs):
+def tree_segmentation(html_docs, treshold=0.9):
     if len(html_docs) < 2:
         return None
 
@@ -176,7 +176,7 @@ def tree_segmentation(html_docs):
 
     acc1 = []
     acc2 = []
-    dual_search(stripped[0], stripped[1], acc1, acc2)
+    dual_search(stripped[0], stripped[1], acc1, acc2, treshold)
 
     return [acc1, acc2]
 

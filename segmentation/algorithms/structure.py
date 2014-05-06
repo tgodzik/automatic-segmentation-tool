@@ -63,7 +63,7 @@ def algorithm(segment):
             print "Analyzing files " + ",".join(files)
 
         #use segmentation
-        checked = segment(pages, treshold) if treshold is not None else segment(pages)
+        checked = segment(pages, treshold)
 
         #measure
         if is_measured:
