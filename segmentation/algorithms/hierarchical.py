@@ -4,9 +4,9 @@ import numpy as np
 
 from bs4 import element
 
-from segmentation.algorithms.structure import strip, algorithm
-from .segment import TreeSegment
-from .cosine import cosine_similarity
+from segmentation.algorithms.functions import prep, algorithm
+from .segment import Segment
+from .functions import cosine_similarity
 
 
 def simple_cost(a, b, gap_score=1):
@@ -53,7 +53,7 @@ def sequence_sim(a, b, cost=simple_cost):
             gapb = arr[i, j - 1] + cost(None, b[j - 1])
             arr[i, j] = min(match, gapa, gapb)
 
-    return arr, arr[lena, lenb] / (sum(map(float, a)) + sum(map(float, b)))
+    return arr, 1 - arr[lena, lenb] / (sum(map(float, a)) + sum(map(float, b)))
 
 
 def aligment(a, b, arr, cost=simple_cost):
@@ -134,26 +134,37 @@ def dual_search(root1, root2, acc1, acc2, treshold):
         for i in chs2:
             seq2.append(len(filter(lambda x: isinstance(x, element.Tag), [j for j in i.children])))
 
-        #arr, _ = sequence_sim(seq1, seq2)
         for i in range(0, len(seq1)):
-            # @TODO maybe use cosine to find out if something is very different
             if seq1[i] == 0 or seq2[i] == 0:
-                acc1.append(TreeSegment(chs1[i]))
-                acc2.append(TreeSegment(chs2[i]))
+                ts1 = Segment(chs1[i])
+                if ts1.get_cost() > 0.1:
+                    acc1.append(ts1)
+                ts2 = Segment(chs2[i])
+                if ts2.get_cost() > 0.1:
+                    acc2.append(ts2)
             elif cosine_similarity(str(chs1[i]), str(chs2[i])) > treshold:
-                acc1.append(TreeSegment(chs1[i]))
-                acc2.append(TreeSegment(chs2[i]))
+                pass
             elif seq1[i] == seq2[i]:
-                dual_search(chs1[i], chs2[i], acc1, acc2)
+                dual_search(chs1[i], chs2[i], acc1, acc2, treshold)
             else:
-                acc1.append(TreeSegment(chs1[i]))
-                acc2.append(TreeSegment(chs2[i]))
+                ts1 = Segment(chs1[i])
+                if ts1.get_cost() > 0.1:
+                    acc1.append(ts1)
+                ts2 = Segment(chs2[i])
+                if ts2.get_cost() > 0.1:
+                    acc2.append(ts2)
 
 
-def analyze(tree1, tree2):
+def analyze(docs):
     """
     Merges trees
+
     """
+
+    trees = map(lambda x: search(prep(open(x).read()),[]), docs)
+    tree1 = trees[0]
+    tree2 = trees[1]
+
     print "Overal similarity:"
     print multi_sequence_sim(tree1, tree2)
 
@@ -162,23 +173,15 @@ def analyze(tree1, tree2):
         al1, al2 = aligment(tree1[i], tree2[i], arr)
         print res
         print al1, al2
-        next1 = []
-        next2 = []
-        #for j in range(0,len(al1)):
-        #    if
 
 
-def tree_segmentation(html_docs, treshold=0.9):
-    if len(html_docs) < 2:
+def tree_segmentation(base, treshold=0.9):
+    if len(base) < 2:
         return None
-
-    stripped = [strip(doc) for doc in html_docs]
 
     acc1 = []
     acc2 = []
-    dual_search(stripped[0], stripped[1], acc1, acc2, treshold)
+    dual_search(base[0], base[1], acc1, acc2, treshold)
 
     return [acc1, acc2]
 
-
-tree_segmentation_algorithm = algorithm(tree_segmentation)

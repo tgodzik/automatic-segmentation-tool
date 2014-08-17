@@ -10,15 +10,15 @@ def belong(segment, ref_segments):
     @type segment: set of string
     @param ref_segments: a list of refernce segments
     @type ref_segments: list of set of string
-    @return: 1 if match was found or 0 otherwise
+    @return: from 0 to 1 based on maximum similarity
     """
     similarities = [cosine_similarity(i, segment) for i in ref_segments]
-    return max(similarities) > 0.8
+    return max(similarities)
 
 
-def simple_measure(segmented, name):
+def fuzzy_measure(segmented, name):
     """
-    Returns similarity index between pages
+    Returns fuzzy similarity index between pages
     @type segmented: list of Segment
     @param segmented: a list of Segment type objects representing segments found by algorithm
     @type name: string
@@ -34,8 +34,5 @@ def simple_measure(segmented, name):
 
     reg = "[^\W\d_]+"
     found = map(lambda x: set(re.findall(reg, x.text(), re.UNICODE)), segmented)
-
     measured_page = [belong(segment, ref_sets) for segment in found]
-    return sum(measured_page) / float(len(segmented) + len(ref_sets) - sum(measured_page))
-
-
+    return sum(measured_page) / (len(ref_sets) + len(found) - sum(measured_page))
