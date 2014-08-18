@@ -14,6 +14,8 @@ def cosine_similarity(doc1, doc2):
     @rtype double
     @return: calculates similarity as a double
     """
+    if len(doc1) == 0 or len(doc2) == 0:
+        return 0.0
 
     main_vector = set(doc1.union(doc2))
 
@@ -36,7 +38,7 @@ def prep(html_doc):
     """
     doc = re.sub("[\s]+", " ", html_doc)
     soup = BeautifulSoup(doc)
-    stripped = ["script", "noscript", "link", "iframe", "meta"]
+    stripped = ["script", "noscript", "link", "iframe", "meta", "style"]
 
     # strip head
     body = soup.find("body")

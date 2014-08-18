@@ -15,14 +15,14 @@ def simplify(seg):
 def break_up(tag):
     if hasattr(tag, 'children'):
         children = {c.name for c in tag.children}
-        print children
-
-        if len(children) == 0:
-            return Segment([tag])
+        children = set(filter(lambda x: x, children))
+        if len(children) == 0 or len(children.intersection({"a", "strong", "br"})) is not 0:
+            return [Segment(tag)]
         else:
             ret_list = []
             for c in tag.children:
-                ret_list.extend(break_up(c))
+                if c.name is not None:
+                    ret_list.extend(break_up(c))
             return ret_list
 
 
@@ -38,7 +38,9 @@ def block_fusion(segments, treshold=0.5):
 
     for segment in segments:
 
-        blocks = break_up(segment)
+        tmp = [break_up(i) for i in segment.tags]
+        blocks = []
+        map(blocks.extend, tmp)
 
         change = True
 

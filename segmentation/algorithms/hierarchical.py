@@ -121,40 +121,6 @@ def search(root, acc, level=0):
         return acc
 
 
-def dual_search(root1, root2, acc1, acc2, treshold):
-    if hasattr(root1, "children") and hasattr(root2, "children"):
-        chs1 = filter(lambda x: isinstance(x, element.Tag), [i for i in root1.children])
-        chs2 = filter(lambda x: isinstance(x, element.Tag), [i for i in root2.children])
-
-        seq1 = []
-        for i in chs1:
-            seq1.append(len(filter(lambda x: isinstance(x, element.Tag), [j for j in i.children])))
-
-        seq2 = []
-        for i in chs2:
-            seq2.append(len(filter(lambda x: isinstance(x, element.Tag), [j for j in i.children])))
-
-        for i in range(0, len(seq1)):
-            if seq1[i] == 0 or seq2[i] == 0:
-                ts1 = Segment(chs1[i])
-                if ts1.get_cost() > 0.1:
-                    acc1.append(ts1)
-                ts2 = Segment(chs2[i])
-                if ts2.get_cost() > 0.1:
-                    acc2.append(ts2)
-            elif cosine_similarity(str(chs1[i]), str(chs2[i])) > treshold:
-                pass
-            elif seq1[i] == seq2[i]:
-                dual_search(chs1[i], chs2[i], acc1, acc2, treshold)
-            else:
-                ts1 = Segment(chs1[i])
-                if ts1.get_cost() > 0.1:
-                    acc1.append(ts1)
-                ts2 = Segment(chs2[i])
-                if ts2.get_cost() > 0.1:
-                    acc2.append(ts2)
-
-
 def analyze(docs):
     """
     Merges trees
@@ -175,13 +141,47 @@ def analyze(docs):
         print al1, al2
 
 
+def dual_search(tag1, tag2, acc1, acc2, treshold):
+    if hasattr(tag1, "children") and hasattr(tag2, "children"):
+
+        chs1 = filter(lambda x: isinstance(x, element.Tag), [i for i in tag1.children])
+        chs2 = filter(lambda x: isinstance(x, element.Tag), [i for i in tag2.children])
+
+        seq1 = []
+        for i in chs1:
+            seq1.append(len(filter(lambda x: isinstance(x, element.Tag), [j for j in i.children])))
+
+        seq2 = []
+        for i in chs2:
+            seq2.append(len(filter(lambda x: isinstance(x, element.Tag), [j for j in i.children])))
+
+        for i in range(0, len(seq1)):
+            if seq1[i] == 0 or seq2[i] == 0:
+                ts1 = Segment(chs1[i])
+                # if ts1.get_cost() > 0.1:
+                acc1.append(ts1)
+                ts2 = Segment(chs2[i])
+                # if ts2.get_cost() > 0.1:
+                acc2.append(ts2)
+            elif cosine_similarity(set(chs1[i]), set(chs2[i])) > treshold:
+                pass
+            elif seq1[i] == seq2[i]:
+                dual_search(chs1[i], chs2[i], acc1, acc2, treshold)
+            else:
+                ts1 = Segment(chs1[i])
+                # if ts1.get_cost() > 0.1:
+                acc1.append(ts1)
+                ts2 = Segment(chs2[i])
+                # if ts2.get_cost() > 0.1:
+                acc2.append(ts2)
+
+
 def tree_segmentation(base, treshold=0.9):
     if len(base) < 2:
         return None
-
     acc1 = []
     acc2 = []
-    dual_search(base[0], base[1], acc1, acc2, treshold)
+    dual_search(base[0].tags[0], base[1].tags[0], acc1, acc2, treshold)
 
     return [acc1, acc2]
 

@@ -20,7 +20,7 @@ class Segment:
         return self
 
     def difference(self, other):
-        if self.density == 0.0 or other.density == 0.0:
+        if self.density() == 0.0 or other.density() == 0.0:
             return 0.0
         else:
             return abs(self.density() - other.density()) / max(self.density(), other.density())
@@ -35,7 +35,6 @@ class Segment:
         @param max_line: maimum line length
         @return: current density
         """
-
         text = "".join([i.text for i in self.tags])
         regexp = "[\w\d]+"
         sum_len = len(text)
