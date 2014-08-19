@@ -18,13 +18,20 @@ if __name__ == "__main__":
     # segmented = segmentation.block_fusion(ready, 0.05)
     segmented = segmentation.tree_segmentation(ready)
 
-    # for i in segmented[0]:
-    #     print i
-    #     print
+    print len(segmented[0])
+    for i in segmented[0]:
+        print i.density()
+        print i.word_set()
+
+    print len(segmented[1])
+    for i in segmented[1]:
+        print i.density()
+        print i.word_set()
+
     # visualize
     for i in range(0, len(segmented)):
         segmentation.visualize(segmented[i], "./tmp/" + files[i])
-
+    #
     # load reference pages and measure
     for i in range(0, len(segmented)):
         print segmentation.simple_measure(segmented[i], files[i])

@@ -52,3 +52,7 @@ class Segment:
 
     def text(self):
         return "".join([i.text for i in self.tags])
+
+    def word_set(self):
+        reg = "[^\W\d_]+"
+        return set(re.findall(reg, self.text(), re.UNICODE))

@@ -1,10 +1,12 @@
-__author__ = 'Tomasz Godzik'
-# -*- coding: utf-8 -*-
-
 from .segment import Segment
 
 
 def simplify(seg):
+    """
+    Go up the tree if possible.
+    @param seg: segment to check
+    @return: simplified segment
+    """
     parent = seg.tags[0].parent
 
     if len(seg.tags) == len(parent.find_all()):
@@ -13,6 +15,11 @@ def simplify(seg):
 
 
 def break_up(tag):
+    """
+    Find the smallest possible segments
+    @param tag: root tag
+    @return: list of smallest possible segments
+    """
     if hasattr(tag, 'children'):
         children = {c.name for c in tag.children}
         children = set(filter(lambda x: x, children))
@@ -27,11 +34,11 @@ def break_up(tag):
 
 
 def block_fusion(segments, treshold=0.5):
-    """ Function responsible for segmentation
+    """
+    Function responsible for segmentation
     :param segments segments to be divided
     :param treshold join threshold
     :returns lists of divided segments
-
     """
 
     divided = []

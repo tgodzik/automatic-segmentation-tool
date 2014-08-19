@@ -1,187 +1,96 @@
-__author__ = 'Tomasz Godzik'
-
-import numpy as np
-
+import re
 from bs4 import element
-
-from segmentation.algorithms.functions import prep, algorithm
 from .segment import Segment
 from .functions import cosine_similarity
 
 
-def simple_cost(a, b, gap_score=1):
-    """Simple cost of aligments
-    :params a first number as string
-    :params b second number as string
-    :return cost as int
-
+def word_set(tag):
     """
-    if a is None:
-        return gap_score * int(b)
-    elif b is None:
-        return gap_score * int(a)
+    Returns a set of words from tag.
+    @param tag: element.Tag
+    @return: set of words
+    """
+    reg = "[^\W\d_]+"
+    found = re.findall(reg, tag.text, re.UNICODE)
+
+    return {i.lower() for i in found}
+
+
+def check_tag(x):
+    """
+    Checks if an element is a Tag
+    @param x: element
+    @return: true if a tag, false otherwise
+    """
+    return isinstance(x, element.Tag)
+
+
+def cases(tag1, tag2, treshold):
+    """
+    Analyze and check different cases.
+    @param tag1: first tag
+    @param tag2: second tag
+    @param treshold: similarity threshold
+    @return: pair of lists or pair of None
+    """
+    ws1 = word_set(tag1)
+    ws2 = word_set(tag2)
+    seq1 = len(filter(check_tag, [j for j in tag1.children]))
+    seq2 = len(filter(check_tag, [j for j in tag2.children]))
+
+    # if "Alevil" in ws1 or "Alevil" in ws2:
+    # print ws1
+    #     print ws2
+    #     print cosine_similarity(ws1, ws2)
+    if cosine_similarity(ws1, ws2) > treshold:
+        return [], []
+    elif len(ws1) == 0 or len(ws2) == 0:
+        return [], []
+    elif seq1 == seq2 and seq1 != 0:
+        return None, None
     else:
-        return abs(int(a) - int(b))
+        ts1 = Segment(tag1)
+        ts2 = Segment(tag2)
+        return [ts1], [ts2]
 
 
-def sequence_sim(a, b, cost=simple_cost):
-    """Calculates similarity between 2 node sequences.
-    :param a first number as string
-    :param b second number as string
-    :param cost cost function taking 2 parameters
-    :return a tuple (numpy array of results, minimal cost)
-
+def concurent_search(tag1, tag2, treshold):
     """
-
-    lena = len(a)
-    lenb = len(b)
-
-    arr = np.zeros((lena + 1, lenb + 1), dtype=np.int)
-
-    arr[0, 0] = 0
-
-    for i in range(1, lena + 1):
-        arr[i, 0] = arr[i - 1, 0] + cost(a[i - 1], None)
-
-    for j in range(1, lenb + 1):
-        arr[0, j] = arr[0, j - 1] + cost(None, b[j - 1])
-
-    for i in range(1, lena + 1):
-        for j in range(1, lenb + 1):
-            match = arr[i - 1, j - 1] + cost(a[i - 1], b[j - 1])
-            gapa = arr[i - 1, j] + cost(a[i - 1], None)
-            gapb = arr[i, j - 1] + cost(None, b[j - 1])
-            arr[i, j] = min(match, gapa, gapb)
-
-    return arr, 1 - arr[lena, lenb] / (sum(map(float, a)) + sum(map(float, b)))
-
-
-def aligment(a, b, arr, cost=simple_cost):
-    """Calculates the string aligment of 2 node sequences.
-    :param a first number as string
-    :param b second number as string
-    :param cost cost function taking 2 parameters
-    :return tuple of aligments
-
+    We could also check for tag name.
+    @param tag1: root of the first tree
+    @param tag2: root of the second tree
+    @param acc1: accumulator for segments in the first tree
+    @param acc2: accumulator for segments in second tree
+    @param treshold: maximum similarity difference
+    @return:
     """
-
-    i = len(a)
-    j = len(b)
-
-    a_aln = []
-    b_aln = []
-
-    while i > 0 and j > 0:
-        if (arr[i, j] - cost(a[i - 1], b[j - 1])) == arr[i - 1, j - 1]:
-            a_aln.insert(0, a[i - 1])
-            b_aln.insert(0, b[j - 1])
-            i -= 1
-            j -= 1
-        elif (arr[i, j] - cost(a[i - 1], None)) == arr[i - 1, j]:
-            a_aln.insert(0, a[i - 1])
-            b_aln.insert(0, 0)
-            i -= 1
-        elif (arr[i, j] - cost(None, b[j - 1])) == arr[i, j - 1]:
-            a_aln.insert(0, 0)
-            b_aln.insert(0, b[j - 1])
-            j -= 1
-        else:
-            print "error"
-
-    while i > 0:
-        a_aln.insert(0, a[i - 1])
-        b_aln.insert(0, 0)
-        i -= 1
-
-    while j > 0:
-        a_aln.insert(0, 0)
-        b_aln.insert(0, b[j - 1])
-        j -= 1
-
-    return a_aln, b_aln
-
-
-def multi_sequence_sim(a, b, cost=simple_cost):
-    sum_sim = 0.0
-    for i in range(0, min(len(a), len(b))):
-        _, res = sequence_sim(a[i], b[i])
-        sum_sim += res
-    return sum_sim / len(a)
-
-
-def search(root, acc, level=0):
-    if hasattr(root, "children"):
-        chs = filter(lambda x: isinstance(x, element.Tag), [i for i in root.children])
-        count = len(chs) + 1
-        if len(acc) <= level:
-            acc.append([])
-        acc[level].append(count)
-        for i in chs:
-            search(i, acc, level + 1)
-        return acc
-
-
-def analyze(docs):
-    """
-    Merges trees
-
-    """
-
-    trees = map(lambda x: search(prep(open(x).read()),[]), docs)
-    tree1 = trees[0]
-    tree2 = trees[1]
-
-    print "Overal similarity:"
-    print multi_sequence_sim(tree1, tree2)
-
-    for i in range(0, min(len(tree1), len(tree2))):
-        arr, res = sequence_sim(tree1[i], tree2[i])
-        al1, al2 = aligment(tree1[i], tree2[i], arr)
-        print res
-        print al1, al2
-
-
-def dual_search(tag1, tag2, acc1, acc2, treshold):
     if hasattr(tag1, "children") and hasattr(tag2, "children"):
 
-        chs1 = filter(lambda x: isinstance(x, element.Tag), [i for i in tag1.children])
-        chs2 = filter(lambda x: isinstance(x, element.Tag), [i for i in tag2.children])
+        child1 = filter(check_tag, [i for i in tag1.children])
+        child2 = filter(check_tag, [i for i in tag2.children])
 
-        seq1 = []
-        for i in chs1:
-            seq1.append(len(filter(lambda x: isinstance(x, element.Tag), [j for j in i.children])))
+        ret1, ret2 = [], []
+        for i in range(0, len(child1)):
+            a, b = cases(child1[i], child2[i], treshold)
+            if a is None:
+                a, b = concurent_search(child1[i], child2[i], treshold)
+            ret1.extend(a)
+            ret2.extend(b)
 
-        seq2 = []
-        for i in chs2:
-            seq2.append(len(filter(lambda x: isinstance(x, element.Tag), [j for j in i.children])))
-
-        for i in range(0, len(seq1)):
-            if seq1[i] == 0 or seq2[i] == 0:
-                ts1 = Segment(chs1[i])
-                # if ts1.get_cost() > 0.1:
-                acc1.append(ts1)
-                ts2 = Segment(chs2[i])
-                # if ts2.get_cost() > 0.1:
-                acc2.append(ts2)
-            elif cosine_similarity(set(chs1[i]), set(chs2[i])) > treshold:
-                pass
-            elif seq1[i] == seq2[i]:
-                dual_search(chs1[i], chs2[i], acc1, acc2, treshold)
-            else:
-                ts1 = Segment(chs1[i])
-                # if ts1.get_cost() > 0.1:
-                acc1.append(ts1)
-                ts2 = Segment(chs2[i])
-                # if ts2.get_cost() > 0.1:
-                acc2.append(ts2)
+        return ret1, ret2
 
 
 def tree_segmentation(base, treshold=0.9):
+    """
+    Top level tree segmentation algorithm.
+    @param base: list of segments to analyze
+    @param treshold: similarity threshold
+    @return: two lists of segments
+    """
     if len(base) < 2:
         return None
-    acc1 = []
-    acc2 = []
-    dual_search(base[0].tags[0], base[1].tags[0], acc1, acc2, treshold)
 
-    return [acc1, acc2]
+    a, b = concurent_search(base[0].tags[0], base[1].tags[0], treshold)
+
+    return [a, b]
 
