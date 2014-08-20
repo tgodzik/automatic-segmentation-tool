@@ -42,10 +42,6 @@ def cases(tag1, tag2, treshold):
     seq1 = len(filter(check_tag, [j for j in tag1.children]))
     seq2 = len(filter(check_tag, [j for j in tag2.children]))
 
-    # if "Alevil" in ws1 or "Alevil" in ws2:
-    # print ws1
-    # print ws2
-    #     print cosine_similarity(ws1, ws2)
     if cosine_similarity(ws1, ws2) > treshold:
         return [], []
     elif len(ws1) == 0 or len(ws2) == 0:
