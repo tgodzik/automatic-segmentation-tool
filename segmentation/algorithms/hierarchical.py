@@ -24,6 +24,9 @@ def check_tag(x):
     """
     return isinstance(x, element.Tag)
 
+# check for a number of date (same as with links) objects and remove that
+# check text density for desired one
+
 
 def cases(tag1, tag2, treshold):
     """
@@ -40,7 +43,7 @@ def cases(tag1, tag2, treshold):
 
     # if "Alevil" in ws1 or "Alevil" in ws2:
     # print ws1
-    #     print ws2
+    # print ws2
     #     print cosine_similarity(ws1, ws2)
     if cosine_similarity(ws1, ws2) > treshold:
         return [], []
@@ -48,6 +51,8 @@ def cases(tag1, tag2, treshold):
         return [], []
     elif seq1 == seq2 and seq1 != 0:
         return None, None
+    # elif seq1 == seq2 and seq1 == 0:
+    #     return [], []
     else:
         ts1 = Segment(tag1)
         ts2 = Segment(tag2)
@@ -80,6 +85,23 @@ def concurent_search(tag1, tag2, treshold):
         return ret1, ret2
 
 
+def not_only_links(x):
+    """
+    Checks if a segment contains something more than links.
+    @param x: segment object
+    @return: True or False
+    """
+    for i in x.tags:
+        wset1 = word_set(i)
+        sets = map(word_set, i.find_all('a'))
+        result = set()
+        for el in sets:
+            result = result.union(el)
+        if result != wset1:
+            return True
+    return False
+
+
 def tree_segmentation(base, treshold=0.9):
     """
     Top level tree segmentation algorithm.
@@ -92,5 +114,8 @@ def tree_segmentation(base, treshold=0.9):
 
     a, b = concurent_search(base[0].tags[0], base[1].tags[0], treshold)
 
-    return [a, b]
+    af = filter(not_only_links, a)
+    bf = filter(not_only_links, b)
+
+    return [af, bf]
 

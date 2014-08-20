@@ -7,6 +7,8 @@ class Segment:
     Represents a single HTML web segment.
     """
 
+    regexp = "[^\W\d_]+"
+
     def __init__(self, tag):
         self.tags = [tag]
         self.word_density = None
@@ -36,16 +38,16 @@ class Segment:
         @return: current density
         """
         text = "".join([i.text for i in self.tags])
-        regexp = "[\w\d]+"
+
         sum_len = len(text)
         lines = int(sum_len / max_line)
         if lines > 0:
             r = max_line * lines
             reduced_text = text[0:r]
-            found = re.findall(regexp, reduced_text, re.UNICODE)
+            found = re.findall(Segment.regexp, reduced_text, re.UNICODE)
             self.word_density = float(len(found)) / float(lines)
         else:
-            found = re.findall(regexp, text, re.UNICODE)
+            found = re.findall(Segment.regexp, text, re.UNICODE)
             self.word_density = float(len(found))
 
         return self.word_density
@@ -54,5 +56,4 @@ class Segment:
         return "".join([i.text for i in self.tags])
 
     def word_set(self):
-        reg = "[^\W\d_]+"
-        return set(re.findall(reg, self.text(), re.UNICODE))
+        return set(re.findall(Segment.regexp, self.text(), re.UNICODE))

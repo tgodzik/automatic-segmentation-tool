@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     # specify pages to test
     base = "/home/tomasz/Documents/master_thesis/test_data/"
-    files = ["a.brw.pl.html", "b.brw.pl.html" ]
+    files = ["a.craigslist.com.html", "b.craigslist.com.html"]
 
     # open all needed files
     pages = [open(base + f).read() for f in files]

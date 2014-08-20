@@ -5,6 +5,8 @@ def find_root(segment):
 
 
 def visualize(segments, name):
+    if len(segments) == 0:
+        return
     root = find_root(segments[0].tags[0])
     soup = root.parent
     for i in segments:

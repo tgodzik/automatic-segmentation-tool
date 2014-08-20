@@ -32,7 +32,6 @@ def simple_measure(segmented, name):
     refs = reference_set.find_one({"name": name})["segments"]
     ref_sets = map(lambda x: set(x), refs)
 
-    ref_sets
     reg = "[^\W\d_]+"
     found = map(lambda x: set(re.findall(reg, x.text(), re.UNICODE)), segmented)
 
