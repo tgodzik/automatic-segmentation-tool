@@ -35,4 +35,15 @@ def fuzzy_measure(segmented, name):
     reg = "[^\W\d_]+"
     found = map(lambda x: set(re.findall(reg, x.text(), re.UNICODE)), segmented)
     measured_page = [belong(segment, ref_sets) for segment in found]
-    return sum(measured_page) / (len(ref_sets) + len(found) - sum(measured_page))
+
+    tp = float(sum(measured_page))
+    fp = float(len(found) - tp)
+    fn = float(len(ref_sets) - tp)
+
+    precision = tp/(tp+fp)
+    recall = tp/(tp+fn)
+    # jaccard
+    # return sum(measured_page) / (len(ref_sets) + len(segmented) - sum(measured_page))
+
+    # F1
+    return 2*precision*recall/(precision+recall)

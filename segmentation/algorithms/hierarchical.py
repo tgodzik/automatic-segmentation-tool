@@ -26,6 +26,7 @@ def check_tag(x):
 
 # check for a number of date (same as with links) objects and remove that
 # check text density for desired one
+# think of using precision recal
 
 
 def cases(tag1, tag2, treshold):
