@@ -1,6 +1,6 @@
 import math
 import re
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, element
 from .segment import Segment
 
 
@@ -40,6 +40,16 @@ def prep(html_doc):
     soup = BeautifulSoup(doc)
     stripped = ["script", "noscript", "link", "iframe", "meta", "style"]
 
+    comments = soup.findAll(text=lambda text: isinstance(text, element.Comment))
+    [comment.extract() for comment in comments]
+
+    empty_tags = [""]
+
+    # maybe make further optimization for the future
+    while len(empty_tags) > 0:
+        empty_tags = soup.findAll(lambda tag: not tag.contents and (tag.string is None or not tag.string.strip()))
+        [empty_tag.extract() for empty_tag in empty_tags]
+
     # strip head
     body = soup.find("body")
     for s in body.find_all(stripped):
@@ -61,7 +71,7 @@ def algorithm(segment, files, is_measured=False, measure_files=None, visualized=
     if verbose:
         print "Analyzing files " + ",".join(files)
 
-    #use segmentation
+    # use segmentation
     checked = segment(pages, treshold)
     #
     # #measure

@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     # specify pages to test
     base = "/home/tomasz/Documents/master_thesis/test_data/"
-    files = ["a.craigslist.com.html", "b.craigslist.com.html"]
+    files = ["a.dziennik.pl.html", "b.dziennik.pl.html"]
 
     # open all needed files
     pages = [open(base + f).read() for f in files]
@@ -18,17 +18,17 @@ if __name__ == "__main__":
     # segmented = segmentation.block_fusion(ready, 0.05)
     segmented = segmentation.tree_segmentation(ready)
 
-    # print len(segmented[0])
-    # for i in segmented[0]:
-    #     print i.density()
-    #     print i.word_set()
-    #
-    # print len(segmented[1])
-    # for i in segmented[1]:
-    #     print i.density()
-    #     print i.word_set()
+    print len(segmented[0])
+    for i in segmented[0]:
+        print i.density()
+        print i.word_set()
 
-    # visualize
+    print len(segmented[1])
+    for i in segmented[1]:
+        print i.density()
+        print i.word_set()
+
+    # # # visualize
     for i in range(0, len(segmented)):
         segmentation.visualize(segmented[i], "./tmp/" + files[i])
     #

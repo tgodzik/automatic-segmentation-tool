@@ -32,6 +32,12 @@ def simple_measure(segmented, name):
     refs = reference_set.find_one({"name": name})["segments"]
     ref_sets = map(lambda x: set(x), refs)
 
+    if len(segmented) == 0:
+        if len(ref_sets) == 0:
+            return 1.0
+        else:
+            return 0.0
+
     reg = "[^\W\d_]+"
     found = map(lambda x: set(re.findall(reg, x.text(), re.UNICODE)), segmented)
 
@@ -41,13 +47,13 @@ def simple_measure(segmented, name):
     fp = float(len(found) - tp)
     fn = float(len(ref_sets) - tp)
 
-    precision = tp/(tp+fp)
-    recall = tp/(tp+fn)
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
 
     # jaccard
     # return sum(measured_page) / float(len(segmented) + len(ref_sets) - sum(measured_page))
 
     # F1
-    return 2*precision*recall/(precision+recall)
+    return 2 * precision * recall / (precision + recall)
 
 

@@ -32,6 +32,12 @@ def fuzzy_measure(segmented, name):
     refs = reference_set.find_one({"name": name})["segments"]
     ref_sets = map(lambda x: set(x), refs)
 
+    if len(segmented) == 0:
+        if len(ref_sets) == 0:
+            return 1.0
+        else:
+            return 0.0
+
     reg = "[^\W\d_]+"
     found = map(lambda x: set(re.findall(reg, x.text(), re.UNICODE)), segmented)
     measured_page = [belong(segment, ref_sets) for segment in found]
