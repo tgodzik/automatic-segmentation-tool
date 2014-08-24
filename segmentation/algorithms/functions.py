@@ -53,7 +53,7 @@ def prep(html_doc):
 
     # maybe make further optimization for the future
     while len(empty_tags) > 0:
-        empty_tags = soup.findAll(lambda tag: not tag.contents and (tag.string is None or not tag.string.strip()))
+        empty_tags = soup.findAll(lambda tag: not tag.text.strip())
         [empty_tag.extract() for empty_tag in empty_tags]
 
     return Segment(body)

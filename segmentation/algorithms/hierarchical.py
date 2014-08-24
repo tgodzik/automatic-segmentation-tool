@@ -48,9 +48,9 @@ def cases(tags, treshold):
     seq_lens = map(len, seqs)
 
     if all([(cosine_similarity(wss[0], wsi) > treshold) for wsi in wss[1:]]):
-        return [[]] * len(tags)
+        return [[] for x in xrange(len(tags))]
     elif any([(len(wsi) == 0) for wsi in wss]):
-        return [[]] * len(tags)
+        return [[] for x in xrange(len(tags))]
     elif equal_names and all([(seq_leni == seq_lens[0]) for seq_leni in seq_lens[1:]]) and (seq_lens[0] != 0):
         return [None] * len(tags)
     else:
@@ -64,18 +64,18 @@ def concurent_search(tags, treshold):
     @param treshold: maximum similarity difference
     @return:
     """
-
     if all([hasattr(tag, "children") for tag in tags]):
 
         childi = map(lambda x: filter(check_tag, x.children), tags)
-        rets = [[]] * len(tags)
 
-        for i in range(0, min(map(len, childi))):
+        rets = [[] for x in xrange(len(tags))]
 
+        for i in range(0, len(childi[0])):
             cnvs = map(lambda x: x[i], childi)
             cas = cases(cnvs, treshold)
             if cas[0] is None:
                 cas = concurent_search(cnvs, treshold)
+
             for r, c in zip(rets, cas):
                 r.extend(c)
 
@@ -125,8 +125,8 @@ def tree_segmentation(base, treshold=0.9):
     if len(base) < 2:
         return None
 
+    # add cases also here
     base_tags = map(lambda x: x.tags[0], base)
     converted = concurent_search(base_tags, treshold)
-
     return [filter(filter_out, a) for a in converted]
 
