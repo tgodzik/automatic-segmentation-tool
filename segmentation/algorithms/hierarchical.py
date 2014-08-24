@@ -30,64 +30,56 @@ def check_tag(x):
 # think of using precision recal
 
 
-def cases(tag1, tag2, treshold):
+def cases(tags, treshold):
     """
     Analyze and check different cases.
-    @param tag1: first tag
-    @param tag2: second tag
+    @param tags: all tags
     @param treshold: similarity threshold
     @return: pair of lists or pair of None
     """
-    ws1 = word_set(tag1)
-    ws2 = word_set(tag2)
+    wss = map(word_set, tags)
 
-    seq1 = filter(check_tag, [j for j in tag1.children])
-    seq2 = filter(check_tag, [j for j in tag2.children])
+    seqs = map(lambda x: filter(check_tag,  x.children), tags)
 
     equal_names = True
-    for i, j in zip(seq1, seq2):
-        equal_names = equal_names and (i.name == j.name)
+    for s in zip(seqs):
+        equal_names = equal_names and all([(s[0].name == si.name) for si in s[1:]])
 
-    print [j.name for j in seq1]
-    print [j.name for j in seq2]
-    seq_len1 = len(seq1)
-    seq_len2 = len(seq2)
-    names1 = tag1.name
-    names2 = tag2.name
+    seq_lens = map(len, seqs)
 
-    if cosine_similarity(ws1, ws2) > treshold:
-        return [], []
-    elif len(ws1) == 0 or len(ws2) == 0:
-        return [], []
-    elif equal_names and (seq_len1 == seq_len2) and (seq_len1 != 0):
-        return None, None
+    if all([(cosine_similarity(wss[0], wsi) > treshold) for wsi in wss[1:]]):
+        return [[]] * len(tags)
+    elif any([(len(wsi) == 0) for wsi in wss]):
+        return [[]] * len(tags)
+    elif equal_names and all([(seq_leni == seq_lens[0]) for seq_leni in seq_lens[1:]]) and (seq_lens[0] != 0):
+        return [None] * len(tags)
     else:
-        ts1 = Segment(tag1)
-        ts2 = Segment(tag2)
-        return [ts1], [ts2]
+        return map(lambda x: [Segment(x)], tags)
 
 
-def concurent_search(tag1, tag2, treshold):
+def concurent_search(tags, treshold):
     """
     We could also check for tag name.
-    @param tag1: root of the first tree
-    @param tag2: root of the second tree
+    @param tags: roots of the trees
     @param treshold: maximum similarity difference
     @return:
     """
-    if hasattr(tag1, "children") and hasattr(tag2, "children"):
 
-        child1 = filter(check_tag, [i for i in tag1.children])
-        child2 = filter(check_tag, [i for i in tag2.children])
-        ret1, ret2 = [], []
-        for i in range(0, len(child1)):
-            a, b = cases(child1[i], child2[i], treshold)
-            if a is None:
-                a, b = concurent_search(child1[i], child2[i], treshold)
-            ret1.extend(a)
-            ret2.extend(b)
+    if all([hasattr(tag, "children") for tag in tags]):
 
-        return ret1, ret2
+        childi = map(lambda x: filter(check_tag, x.children), tags)
+        rets = [[]] * len(tags)
+
+        for i in range(0, min(map(len, childi))):
+
+            cnvs = map(lambda x: x[i], childi)
+            cas = cases(cnvs, treshold)
+            if cas[0] is None:
+                cas = concurent_search(cnvs, treshold)
+            for r, c in zip(rets, cas):
+                r.extend(c)
+
+        return rets
 
 
 def filter_out(x):
@@ -133,12 +125,8 @@ def tree_segmentation(base, treshold=0.9):
     if len(base) < 2:
         return None
 
-    a, b = concurent_search(base[0].tags[0], base[1].tags[0], treshold)
+    base_tags = map(lambda x: x.tags[0], base)
+    converted = concurent_search(base_tags, treshold)
 
-    for i in a:
-        print i
-    af = filter(filter_out, a)
-    bf = filter(filter_out, b)
-
-    return [af, bf]
+    return [filter(filter_out, a) for a in converted]
 

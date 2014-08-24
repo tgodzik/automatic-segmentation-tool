@@ -38,7 +38,13 @@ def prep(html_doc):
     """
     doc = re.sub("[\s]+", " ", html_doc)
     soup = BeautifulSoup(doc)
+
     stripped = ["script", "noscript", "link", "iframe", "meta", "style"]
+
+    # strip head
+    body = soup.find("body")
+    for s in body.find_all(stripped):
+        s.decompose()
 
     comments = soup.findAll(text=lambda text: isinstance(text, element.Comment))
     [comment.extract() for comment in comments]
@@ -50,11 +56,8 @@ def prep(html_doc):
         empty_tags = soup.findAll(lambda tag: not tag.contents and (tag.string is None or not tag.string.strip()))
         [empty_tag.extract() for empty_tag in empty_tags]
 
-    # strip head
-    body = soup.find("body")
-    for s in body.find_all(stripped):
-        s.decompose()
     return Segment(body)
+
 
 
 def algorithm(segment, files, is_measured=False, measure_files=None, visualized=False, verbose=True, treshold=None):
