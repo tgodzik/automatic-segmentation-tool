@@ -41,8 +41,10 @@ def cases(tags, treshold):
 
     seqs = map(lambda x: filter(check_tag,  x.children), tags)
 
+    # for i in seqs:
+    #     print map(lambda x: x.name,i)
     equal_names = True
-    for s in zip(seqs):
+    for s in zip(*seqs):
         equal_names = equal_names and all([(s[0].name == si.name) for si in s[1:]])
 
     seq_lens = map(len, seqs)
@@ -89,8 +91,8 @@ def filter_out(x):
     @return: True or False
     """
 
-    if x.density() < 5.0:
-        return False
+    # if x.density() <= 1.0:
+    #     return False
 
     wrong = 0
     all_letters = 0
@@ -127,6 +129,11 @@ def tree_segmentation(base, treshold=0.9):
 
     # add cases also here
     base_tags = map(lambda x: x.tags[0], base)
-    converted = concurent_search(base_tags, treshold)
+
+    converted = cases(base_tags,treshold)
+
+    if converted[0] is None:
+        converted = concurent_search(base_tags, treshold)
+
     return [filter(filter_out, a) for a in converted]
 

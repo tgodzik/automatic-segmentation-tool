@@ -1,40 +1,68 @@
 import segmentation
 import json
 from pymongo import MongoClient
+import os
+
+
+def check_files(dn):
+    ret = set()
+    for _, _, files in os.walk(dn):
+        for f in files:
+            ret.add(f[2:])
+    return ret
+
 
 if __name__ == "__main__":
 
+    totals = 0.0
+    totalf = 0.0
+    j = 0
+
     # specify pages to test
     base = "/home/tomasz/Documents/master_thesis/test_data/"
-    files = ["a.brw.pl.html", "b.brw.pl.html"]
 
-    # open all needed files
-    pages = [open(base + f).read() for f in files]
+    # fileset = check_files(base)
+    fileset = {"northfish.pl.html"}
+    for i in fileset:
 
-    # strip form useless tags and change to segments
-    ready = map(lambda x: segmentation.prep(x), pages)
+        j += 2
 
-    # for i in ready:
-    #     print i.tags[0].prettify()
-    # apply algorithms - modular part
-    # segmented = segmentation.block_fusion(ready, 0.05)
-    segmented = segmentation.tree_segmentation(ready)
+        files = ["a." + i, "b." + i]
 
-    print len(segmented[0])
-    # for i in segmented[0]:
-    #     print i.density()
-    #     print i.word_set()
+        # open all needed files
+        pages = [open(base + f).read() for f in files]
 
-    print len(segmented[1])
-    # for i in segmented[1]:
-    #     print i.density()
-    #     print i.word_set()
+        # strip form useless tags and change to segments
+        ready = map(lambda x: segmentation.prep(x), pages)
 
-    # # # visualize
-    for i in range(0, len(segmented)):
-        segmentation.visualize(segmented[i], "./tmp/" + files[i])
-    #
-    # load reference pages and measure
-    for i in range(0, len(segmented)):
-        print files[i] + " - simple: ", segmentation.simple_measure(segmented[i], files[i])
-        print files[i] + " - fuzzy: ", segmentation.fuzzy_measure(segmented[i], files[i])
+        # # for i in ready:
+        # #     print i.tags[0].prettify()
+        # # apply algorithms - modular part
+        # # segmented = segmentation.block_fusion(ready, 0.05)
+        segmented = segmentation.tree_segmentation(ready)
+
+        print len(segmented[0])
+        # for i in segmented[0]:
+        #      print i.density()
+        #      print i.word_set()
+
+        print len(segmented[1])
+        # for i in segmented[1]:
+        #     print i.density()
+        #     print i.word_set()
+
+        # visualize
+        # for i in range(0, len(segmented)):
+        # segmentation.visualize(segmented[i], "./tmp/" + files[i])
+
+        # load reference pages and measure
+        for ii in range(0, len(segmented)):
+            simpl = segmentation.simple_measure(segmented[ii], files[ii])
+            fuzz = segmentation.fuzzy_measure(segmented[ii], files[ii])
+            totals += simpl
+            totalf += fuzz
+            print files[ii] + " - simple: ", simpl
+            print files[ii] + " - fuzzy: ", fuzz
+
+    print "Total simple : ", totals / float(j)
+    print "Total fuzzy : ", totalf / float(j)

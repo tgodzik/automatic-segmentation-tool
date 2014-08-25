@@ -54,6 +54,8 @@ def simple_measure(segmented, name):
     # return sum(measured_page) / float(len(segmented) + len(ref_sets) - sum(measured_page))
 
     # F1
+    if tp == 0:
+        return 0.0
     return 2 * precision * recall / (precision + recall)
 
 
