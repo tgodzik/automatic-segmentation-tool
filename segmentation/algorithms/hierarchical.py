@@ -4,6 +4,16 @@ from .segment import Segment
 from .functions import cosine_similarity
 
 
+class FakeTag:
+    def __init__(self, name, text):
+        self.name = name
+        self.children = []
+        self.text = text
+
+    def find_all(self, ll):
+        return []
+
+
 def word_set(tag):
     """
     Returns a set of words from tag.
@@ -22,8 +32,27 @@ def check_tag(x):
     @param x: element
     @return: true if a tag, false otherwise
     """
-    return isinstance(x, element.Tag) and x.name not in ["time", "a"]
+    if isinstance(x, element.Tag):
+        if x.name in ["time", "a"]:
+            return FakeTag(x.name, x.text)
+        return x
+    else:
+        return FakeTag("text", unicode(x))
 
+
+def filter_tag(x):
+    """
+    Checks if an element is a Tag.
+    @todo Maybe not remove text nodes
+    @param x: element
+    @return: true if a tag, false otherwise
+    """
+    if isinstance(x, element.Tag):
+        if x.name in ["time", "a"]:
+            return False
+        return True
+    else:
+        return True
 
 # check for a number of date (same as with links) objects and remove that
 # check text density for desired one
@@ -39,10 +68,8 @@ def cases(tags, treshold):
     """
     wss = map(word_set, tags)
 
-    seqs = map(lambda x: filter(check_tag,  x.children), tags)
+    seqs = map(lambda x: map(check_tag, x.children), tags)
 
-    # for i in seqs:
-    #     print map(lambda x: x.name,i)
     equal_names = True
     for s in zip(*seqs):
         equal_names = equal_names and all([(s[0].name == si.name) for si in s[1:]])
@@ -68,7 +95,8 @@ def concurent_search(tags, treshold):
     """
     if all([hasattr(tag, "children") for tag in tags]):
 
-        childi = map(lambda x: filter(check_tag, x.children), tags)
+        childi = map(lambda x: map(check_tag,filter(filter_tag, x.children)), tags)
+
 
         rets = [[] for x in xrange(len(tags))]
 
@@ -91,7 +119,7 @@ def filter_out(x):
     @return: True or False
     """
 
-    # if x.density() <= 1.0:
+    # if x.name in ["time", "a"]:
     #     return False
 
     wrong = 0
@@ -130,7 +158,7 @@ def tree_segmentation(base, treshold=0.9):
     # add cases also here
     base_tags = map(lambda x: x.tags[0], base)
 
-    converted = cases(base_tags,treshold)
+    converted = cases(base_tags, treshold)
 
     if converted[0] is None:
         converted = concurent_search(base_tags, treshold)

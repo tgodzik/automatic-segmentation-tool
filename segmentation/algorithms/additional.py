@@ -1,3 +1,8 @@
+import numpy as np
+from bs4 import element
+from .functions import prep
+
+
 def simple_cost(a, b, gap_score=1):
     """Simple cost of aligments
     :params a first number as string
