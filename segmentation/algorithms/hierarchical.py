@@ -54,6 +54,7 @@ def filter_tag(x):
     else:
         return True
 
+
 # check for a number of date (same as with links) objects and remove that
 # check text density for desired one
 # think of using precision recal
@@ -68,6 +69,8 @@ def cases(tags, treshold):
     """
     wss = map(word_set, tags)
 
+    # @todo not check tag, just create a representation based on Fake Tags, used it also for ul
+    # so analysis only here, also sequence matching based on aligments
     seqs = map(lambda x: map(check_tag, x.children), tags)
 
     equal_names = True
@@ -95,8 +98,9 @@ def concurent_search(tags, treshold):
     """
     if all([hasattr(tag, "children") for tag in tags]):
 
-        childi = map(lambda x: map(check_tag,filter(filter_tag, x.children)), tags)
-
+        # @todo make sure changing is correct here
+        # maybe use aligment also
+        childi = map(lambda x: map(check_tag, filter(filter_tag, x.children)), tags)
 
         rets = [[] for x in xrange(len(tags))]
 
@@ -115,12 +119,13 @@ def concurent_search(tags, treshold):
 def filter_out(x):
     """
     Checks if a segment contains something more than links and numbers.
+    POSTPROCESS
     @param x: segment object
     @return: True or False
     """
 
     # if x.name in ["time", "a"]:
-    #     return False
+    # return False
 
     wrong = 0
     all_letters = 0
