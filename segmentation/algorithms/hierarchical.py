@@ -3,15 +3,10 @@ from bs4 import element
 from .segment import Segment
 from .functions import cosine_similarity
 
-
-class FakeTag:
-    def __init__(self, name, text):
-        self.name = name
-        self.children = []
-        self.text = text
-
-    def find_all(self, ll):
-        return []
+inline_elements = ["b", "big", "i", "small", "tt", "abbr", "acronym", "cite",
+                   "code", "dfn", "em", "kbd", "strong", "samp", "var", "a",
+                   "bdo", "br", "img", "map", "object", "q", "script", "span",
+                   "sub", "sup", "button", "input", "label", "select", "textarea"]
 
 
 def word_set(tag):
@@ -20,44 +15,52 @@ def word_set(tag):
     @param tag: element.Tag
     @return: set of words
     """
-    reg = "[^\W\d_]+"
-    found = re.findall(reg, tag.text, re.UNICODE)
 
+    reg = "[^\W\d_]+"
+
+    if isinstance(tag, element.Tag):
+        found = re.findall(reg, tag.text, re.UNICODE)
+    else:
+        found = re.findall(reg, unicode(tag), re.UNICODE)
     return {i.lower() for i in found}
 
 
-def check_tag(x):
+def change_tag(x):
     """
-    Checks if an element is a Tag
+    Changes tag to a comparable representation.
+    @todo determine whether to check different types of tags i.e. formatting tags
     @param x: element
     @return: true if a tag, false otherwise
     """
     if isinstance(x, element.Tag):
-        if x.name in ["time", "a"]:
-            return FakeTag(x.name, x.text)
-        return x
+        return x.name
     else:
-        return FakeTag("text", unicode(x))
+        return "text"
 
 
 def filter_tag(x):
     """
-    Checks if an element is a Tag.
+    Checks if to go into an element.
     @todo Maybe not remove text nodes
     @param x: element
     @return: true if a tag, false otherwise
     """
     if isinstance(x, element.Tag):
-        if x.name in ["time", "a"]:
+        if x.name in inline_elements:
             return False
         return True
     else:
         return True
 
 
-# check for a number of date (same as with links) objects and remove that
-# check text density for desired one
-# think of using precision recal
+def sequence_compare(sq1, sq2):
+    """
+    Check whether
+    @param sq1:
+    @param sq2:
+    @return:
+    """
+    return sq1 == sq2
 
 
 def cases(tags, treshold):
@@ -67,26 +70,23 @@ def cases(tags, treshold):
     @param treshold: similarity threshold
     @return: pair of lists or pair of None
     """
-    wss = map(word_set, tags)
 
-    # @todo not check tag, just create a representation based on Fake Tags, used it also for ul
-    # so analysis only here, also sequence matching based on aligments
-    seqs = map(lambda x: map(check_tag, x.children), tags)
+    word_sets = map(word_set, tags)
+    sequences = map(lambda one: map(change_tag, one.children), tags)
 
-    equal_names = True
-    for s in zip(*seqs):
-        equal_names = equal_names and all([(s[0].name == si.name) for si in s[1:]])
-
-    seq_lens = map(len, seqs)
-
-    if all([(cosine_similarity(wss[0], wsi) > treshold) for wsi in wss[1:]]):
-        return [[] for x in xrange(len(tags))]
-    elif any([(len(wsi) == 0) for wsi in wss]):
-        return [[] for x in xrange(len(tags))]
-    elif equal_names and all([(seq_leni == seq_lens[0]) for seq_leni in seq_lens[1:]]) and (seq_lens[0] != 0):
+    # @todo conditions about lists
+    # 1. The tags have almost same words
+    if all([(cosine_similarity(word_sets[0], wsi) > treshold) for wsi in word_sets[1:]]):
+        return [[] for t in xrange(len(tags))]
+    # 2. The tags have no words
+    elif any([(len(wsi) == 0) for wsi in word_sets]):
+        return [[] for t in xrange(len(tags))]
+    # 3. Tags have the same children sequences
+    elif all(sequence_compare(sequences[0], seq) for seq in sequences[1:]) and (len(sequences[0]) != 0):
         return [None] * len(tags)
+    # 4. Otherwise, this is a segment
     else:
-        return map(lambda x: [Segment(x)], tags)
+        return map(lambda sg: [Segment(sg)], tags)
 
 
 def concurent_search(tags, treshold):
@@ -98,13 +98,13 @@ def concurent_search(tags, treshold):
     """
     if all([hasattr(tag, "children") for tag in tags]):
 
-        # @todo make sure changing is correct here
-        # maybe use aligment also
-        childi = map(lambda x: map(check_tag, filter(filter_tag, x.children)), tags)
+        childi = map(lambda x: filter(filter_tag, x.children), tags)
 
         rets = [[] for x in xrange(len(tags))]
 
         for i in range(0, len(childi[0])):
+
+            # @todo if is list
             cnvs = map(lambda x: x[i], childi)
             cas = cases(cnvs, treshold)
             if cas[0] is None:

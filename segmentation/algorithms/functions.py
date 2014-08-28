@@ -41,7 +41,6 @@ def prep(html_doc):
 
     stripped = ["script", "noscript", "link", "iframe", "meta", "style"]
 
-    # strip head
     body = soup.find("body")
     for s in body.find_all(stripped):
         s.decompose()
@@ -54,12 +53,6 @@ def prep(html_doc):
     while len(empty_tags) > 0:
         empty_tags = soup.findAll(lambda tag: not tag.contents and (tag.string is None or not tag.string.strip()))
         [empty_tag.extract() for empty_tag in empty_tags]
-    # empty_tags = [""]
-
-    # maybe make further optimization for the future
-    # while len(empty_tags) > 0:
-    #     empty_tags = soup.findAll(lambda tag: not tag.text.strip())
-    #     [empty_tag.extract() for empty_tag in empty_tags]
 
     return Segment(body)
 
