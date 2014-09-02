@@ -1,12 +1,13 @@
 import re
-from bs4 import element
+from bs4 import element, NavigableString
 from .segment import Segment
 from .functions import cosine_similarity
 
 inline_elements = ["b", "big", "i", "small", "tt", "abbr", "acronym", "cite",
                    "code", "dfn", "em", "kbd", "strong", "samp", "var", "a",
                    "bdo", "br", "img", "map", "object", "q", "script", "span",
-                   "sub", "sup", "button", "input", "label", "select", "textarea"]
+                   "sub", "sup", "button", "input", "label", "select", "textarea",
+                   "cufontext", "cufon"]
 
 
 def word_set(tag):
@@ -38,19 +39,17 @@ def change_tag(x):
         return "text"
 
 
-def filter_tag(x):
+def filter_tag(x, i):
     """
     Checks if to go into an element.
     @todo Maybe not remove text nodes
     @param x: element
     @return: true if a tag, false otherwise
     """
-    if isinstance(x, element.Tag):
-        if x.name in inline_elements:
-            return False
-        return True
+    if x in inline_elements or x == "text":
+        return -1
     else:
-        return True
+        return i
 
 
 def sequence_compare(sq1, sq2):
@@ -63,6 +62,9 @@ def sequence_compare(sq1, sq2):
     return sq1 == sq2
 
 
+list_tags = ["ul", "ol", "dl"]
+
+
 def cases(tags, treshold):
     """
     Analyze and check different cases.
@@ -70,23 +72,29 @@ def cases(tags, treshold):
     @param treshold: similarity threshold
     @return: pair of lists or pair of None
     """
+    # @todo conditions about lists
+    # if all(x.name in list_tags for x in tags):
 
-    word_sets = map(word_set, tags)
     sequences = map(lambda one: map(change_tag, one.children), tags)
 
-    # @todo conditions about lists
-    # 1. The tags have almost same words
-    if all([(cosine_similarity(word_sets[0], wsi) > treshold) for wsi in word_sets[1:]]):
-        return [[] for t in xrange(len(tags))]
-    # 2. The tags have no words
-    elif any([(len(wsi) == 0) for wsi in word_sets]):
-        return [[] for t in xrange(len(tags))]
-    # 3. Tags have the same children sequences
-    elif all(sequence_compare(sequences[0], seq) for seq in sequences[1:]) and (len(sequences[0]) != 0):
-        return [None] * len(tags)
-    # 4. Otherwise, this is a segment
+    # Do tags have the same children sequences
+    if all(sequence_compare(sequences[0], seq) for seq in sequences[1:]) and (len(sequences[0]) != 0):
+
+        # get a mapping
+        filtered = [filter_tag(sequences[0][i], i) for i in range(len(sequences[0]))]
+
+        if all(f == -1 for f in filtered) and len(filtered) > 0:
+
+            ielements = map(lambda x: x.contents[i], tags)
+            sets = map(word_set, ielements)
+
+            if all((len(s) > 0) and (sets[0] != s) for s in sets[1:]):
+                return map(lambda sg: [Segment(sg)], tags), True
+        return filtered, False
+
+    # otherwise, this is a segment
     else:
-        return map(lambda sg: [Segment(sg)], tags)
+        return map(lambda sg: [Segment(sg)], tags), True
 
 
 def concurent_search(tags, treshold):
@@ -98,22 +106,20 @@ def concurent_search(tags, treshold):
     """
     if all([hasattr(tag, "children") for tag in tags]):
 
-        childi = map(lambda x: filter(filter_tag, x.children), tags)
+        filtered, is_segment = cases(tags, treshold)
 
-        rets = [[] for x in xrange(len(tags))]
+        if is_segment:
+            return filtered
+        else:
+            rets = [[] for _ in xrange(len(tags))]
+            for i in range(len(filtered)):
+                if filtered[i] != -1:
+                    cnvs = map(lambda x: x.contents[filtered[i]], tags)
+                    cas = concurent_search(cnvs, treshold)
+                    for r, c in zip(rets, cas):
+                        r.extend(c)
 
-        for i in range(0, len(childi[0])):
-
-            # @todo if is list
-            cnvs = map(lambda x: x[i], childi)
-            cas = cases(cnvs, treshold)
-            if cas[0] is None:
-                cas = concurent_search(cnvs, treshold)
-
-            for r, c in zip(rets, cas):
-                r.extend(c)
-
-        return rets
+            return rets
 
 
 def filter_out(x):
@@ -131,23 +137,33 @@ def filter_out(x):
     all_letters = 0
 
     for i in x.tags:
-        reject = i.find_all(['a', 'time'])
+        if isinstance(i, element.Tag):
+            reject = i.find_all(['a', 'time'])
 
-        digit_reg = re.compile("\d", re.UNICODE)
-        links_nums = sum([len(digit_reg.findall(j.text)) for j in reject])
-        nums = len(digit_reg.findall(i.text))
+            digit_reg = re.compile("\d", re.UNICODE)
+            links_nums = sum([len(digit_reg.findall(j.text)) for j in reject])
+            nums = len(digit_reg.findall(i.text))
 
-        word_reg = re.compile("\w", re.UNICODE)
-        links_all = sum([len(word_reg.findall(j.text)) for j in reject])
+            word_reg = re.compile("\w", re.UNICODE)
+            links_all = sum([len(word_reg.findall(j.text)) for j in reject])
 
-        all_letters += len(word_reg.findall(i.text))
-        wrong += nums - links_nums + links_all
+            all_letters += len(word_reg.findall(i.text))
+            wrong += nums - links_nums + links_all
 
     # arbitrary 0.5
-    if all_letters * 0.5 <= wrong:
+    if all_letters * 0.5 < wrong:
         return False
     else:
         return True
+
+
+def simplify(segment):
+    parent = segment.tags[0].parent
+
+    ch = filter(lambda x: x not in inline_elements, parent.contents)
+    if len(segment.tags) == len(ch):
+        segment.tags = [parent]
+        simplify(segment)
 
 
 def tree_segmentation(base, treshold=0.9):
@@ -163,10 +179,11 @@ def tree_segmentation(base, treshold=0.9):
     # add cases also here
     base_tags = map(lambda x: x.tags[0], base)
 
-    converted = cases(base_tags, treshold)
+    converted = concurent_search(base_tags, treshold)
 
-    if converted[0] is None:
-        converted = concurent_search(base_tags, treshold)
+    # for i in converted:
+    #     for j in i:
+    #         simplify(j)
 
     return [filter(filter_out, a) for a in converted]
 

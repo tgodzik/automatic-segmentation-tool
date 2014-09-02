@@ -1,4 +1,5 @@
 import re
+from bs4 import element
 # -*- coding: utf-8 -*-
 
 
@@ -30,6 +31,13 @@ class Segment:
     def density(self):
         return self.word_density or self.calculate_density()
 
+    @staticmethod
+    def get_str(a):
+        if isinstance(a, element.Tag):
+            return a.text
+        else:
+            return unicode(a)
+
     def calculate_density(self, max_line=80):
         """
         Get the current text density of the segment.
@@ -37,7 +45,7 @@ class Segment:
         @param max_line: maimum line length
         @return: current density
         """
-        text = "".join([i.text for i in self.tags])
+        text = "".join([self.get_str(i) for i in self.tags])
 
         sum_len = len(text)
         lines = int(sum_len / max_line)
@@ -53,7 +61,7 @@ class Segment:
         return self.word_density
 
     def text(self):
-        return "".join([i.text for i in self.tags])
+        return "".join([self.get_str(i) for i in self.tags])
 
     def word_set(self):
         return set(re.findall(Segment.regexp, self.text(), re.UNICODE))
