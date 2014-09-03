@@ -19,8 +19,8 @@ if __name__ == "__main__":
     # specify pages to test
     base = "/home/tomasz/Documents/master_thesis/test_data/"
 
-    # fileset = check_files(base)
-    fileset = {"northfish.pl.html"}
+    fileset = check_files(base)
+    # fileset = {"northfish.pl.html"}
     for i in fileset:
 
         j += 2
@@ -40,18 +40,23 @@ if __name__ == "__main__":
             # segmented = segmentation.block_fusion(ready, 0.05)
         segmented = segmentation.tree_segmentation(ready)
 
-        print len(segmented[0])
-        for i in segmented[0]:
-            print i.density()
-            print i.tags[0].name
-            print i.word_set()
+        # print len(segmented[0])
+        # for i in segmented[0]:
+        #     print i.density()
+        #     print i.tags[0].name
+        #     print i.word_set()
 
-        print len(segmented[1])
-        for i in segmented[1]:
-            print i.density()
-            print i.tags[0].name
-            print i.word_set()
+        # print len(segmented[1])
+        # for i in segmented[1]:
+        #     print i.density()
+        #     print i.tags[0].name
+        #     print i.word_set()
 
+        # print len(segmented[2])
+        # for i in segmented[2]:
+        #     print i.density()
+        #     print i.tags[0].name
+        #     print i.word_set()
         # visualize
         # for i in range(0, len(segmented)):
         #     segmentation.visualize(segmented[i], "./tmp/" + files[i])
@@ -62,8 +67,8 @@ if __name__ == "__main__":
             fuzz = segmentation.fuzzy_measure(segmented[ii], files[ii])
             totals += simpl
             totalf += fuzz
-            print files[ii] + " - simple: ", simpl
-            print files[ii] + " - fuzzy: ", fuzz
+            # print files[ii] + " - simple: ", simpl
+            # print files[ii] + " - fuzzy: ", fuzz
 
-    # print "Total simple : ", totals / float(j)
-    # print "Total fuzzy : ", totalf / float(j)
+    print "Total simple : ", totals / float(j)
+    print "Total fuzzy : ", totalf / float(j)

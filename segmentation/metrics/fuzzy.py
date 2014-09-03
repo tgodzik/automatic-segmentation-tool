@@ -52,4 +52,6 @@ def fuzzy_measure(segmented, name):
     # return sum(measured_page) / (len(ref_sets) + len(segmented) - sum(measured_page))
 
     # F1
+    if tp == 0:
+        return 0.0
     return 2*precision*recall/(precision+recall)

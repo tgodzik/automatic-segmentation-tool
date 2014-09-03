@@ -1,8 +1,9 @@
 import re
-from bs4 import element, NavigableString
+from bs4 import element
 from .segment import Segment
 from .functions import cosine_similarity
 
+list_tags = ["ul", "ol", "dl"]
 inline_elements = ["b", "big", "i", "small", "tt", "abbr", "acronym", "cite",
                    "code", "dfn", "em", "kbd", "strong", "samp", "var", "a",
                    "bdo", "br", "img", "map", "object", "q", "script", "span",
@@ -12,11 +13,10 @@ inline_elements = ["b", "big", "i", "small", "tt", "abbr", "acronym", "cite",
 
 def word_set(tag):
     """
-    Returns a set of words from tag.
-    @param tag: element.Tag
+    Returns a set of words from tag or NavigableString.
+    @param tag: element.Tag or element.NavigableString
     @return: set of words
     """
-
     reg = "[^\W\d_]+"
 
     if isinstance(tag, element.Tag):
@@ -29,8 +29,7 @@ def word_set(tag):
 def change_tag(x):
     """
     Changes tag to a comparable representation.
-    @todo determine whether to check different types of tags i.e. formatting tags
-    @param x: element
+    @param x: Tag or NavigableString
     @return: true if a tag, false otherwise
     """
     if isinstance(x, element.Tag):
@@ -42,8 +41,7 @@ def change_tag(x):
 def filter_tag(x, i):
     """
     Checks if to go into an element.
-    @todo Maybe not remove text nodes
-    @param x: element
+    @param x: Tag or NavigableString
     @return: true if a tag, false otherwise
     """
     if x in inline_elements or x == "text":
@@ -54,15 +52,32 @@ def filter_tag(x, i):
 
 def sequence_compare(sq1, sq2):
     """
-    Check whether
-    @param sq1:
-    @param sq2:
-    @return:
+    Compare tag sequences.
+    @param sq1: sequence 1
+    @param sq2: sequence 2
+    @return: True if similar or False otherwise
     """
     return sq1 == sq2
 
 
-list_tags = ["ul", "ol", "dl"]
+def set_compare(s1, s2):
+    """
+   Compare word sets.
+    @param s1: set 1
+    @param s2: set 2
+    @return: True if similar or False otherwise
+    """
+    return s1 == s2
+
+
+def unique_sets(sets):
+    if len(sets[0]) > 0:
+        for i in xrange(len(sets)):
+            for j in range(i, len(sets)):
+                if set_compare(sets[i], sets[j]):
+                    return False
+        return True
+    return False
 
 
 def cases(tags, treshold):
@@ -70,15 +85,16 @@ def cases(tags, treshold):
     Analyze and check different cases.
     @param tags: all tags
     @param treshold: similarity threshold
-    @return: pair of lists or pair of None
+    @return: sequence of ids to check
     """
     # @todo conditions about lists
     # if all(x.name in list_tags for x in tags):
 
     sequences = map(lambda one: map(change_tag, one.children), tags)
 
-    # Do tags have the same children sequences
+    # do tags have the same children sequences
     if all(sequence_compare(sequences[0], seq) for seq in sequences[1:]) and (len(sequences[0]) != 0):
+
 
         # get a mapping
         filtered = [filter_tag(sequences[0][i], i) for i in range(len(sequences[0]))]
@@ -88,21 +104,22 @@ def cases(tags, treshold):
             ielements = map(lambda x: x.contents[i], tags)
             sets = map(word_set, ielements)
 
-            if all((len(s) > 0) and (sets[0] != s) for s in sets[1:]):
+            if unique_sets(sets):
                 return map(lambda sg: [Segment(sg)], tags), True
         return filtered, False
 
     # otherwise, this is a segment
     else:
+        # print sequences
         return map(lambda sg: [Segment(sg)], tags), True
 
 
 def concurent_search(tags, treshold):
     """
-    We could also check for tag name.
+    Main function for concurently searching the tree.
     @param tags: roots of the trees
     @param treshold: maximum similarity difference
-    @return:
+    @return: list of segments
     """
     if all([hasattr(tag, "children") for tag in tags]):
 
@@ -157,33 +174,33 @@ def filter_out(x):
         return True
 
 
-def simplify(segment):
-    parent = segment.tags[0].parent
-
-    ch = filter(lambda x: x not in inline_elements, parent.contents)
-    if len(segment.tags) == len(ch):
-        segment.tags = [parent]
-        simplify(segment)
+# def simplify(segment):
+#
+# parent = segment.tags[0].parent
+#
+# ch = filter(lambda x: x not in inline_elements, parent.contents)
+# if len(segment.tags) == len(ch):
+#         segment.tags = [parent]
+#         simplify(segment)
 
 
 def tree_segmentation(base, treshold=0.9):
     """
     Top level tree segmentation algorithm.
-    @param base: list of segments to analyze
+    @param base: list of root tags to analyze
     @param treshold: similarity threshold
-    @return: two lists of segments
+    @return: n lists of segments
     """
     if len(base) < 2:
         return None
 
-    # add cases also here
     base_tags = map(lambda x: x.tags[0], base)
 
     converted = concurent_search(base_tags, treshold)
 
     # for i in converted:
-    #     for j in i:
-    #         simplify(j)
+    # for j in i:
+    # simplify(j)
 
     return [filter(filter_out, a) for a in converted]
 
