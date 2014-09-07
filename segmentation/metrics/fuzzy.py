@@ -3,23 +3,22 @@ import re
 from pymongo import MongoClient
 
 
-def belong(segment, ref_segments):
+def compare(segment, ref_segment):
     """
-    Checks if a segment is in a list of reference segments.
-    @param segment: one segment set of words
+    Checks if a segment is equal to another
+    @param segment: one segment
     @type segment: set of string
-    @param ref_segments: a list of refernce segments
-    @type ref_segments: list of set of string
-    @return: from 0 to 1 based on maximum similarity
+    @param ref_segment: second segmment
+    @type ref_segment: set of string
+    @return: value between o and 1 representing similarity
     """
-    similarities = [cosine_similarity(i, segment) for i in ref_segments]
-    return max(similarities)
+    return cosine_similarity(segment, ref_segment)
 
 
 def fuzzy_measure(segmented, name):
     """
     Returns fuzzy similarity index between pages
-    @type segmented: list of Segment
+    @type segmented: segment.Segment
     @param segmented: a list of Segment type objects representing segments found by algorithm
     @type name: string
     @param name: name of the file being analyzed
@@ -29,29 +28,29 @@ def fuzzy_measure(segmented, name):
 
     client = MongoClient()
     reference_set = client.segmentation.reference_set
-    refs = reference_set.find_one({"name": name})["segments"]
-    ref_sets = map(lambda x: set(x), refs)
-
-    if len(segmented) == 0:
-        if len(ref_sets) == 0:
-            return 1.0
-        else:
-            return 0.0
+    ref_seg = set(reference_set.find_one({"name": name})["segment"])
 
     reg = "[^\W\d_]+"
-    found = map(lambda x: set(re.findall(reg, x.text(), re.UNICODE)), segmented)
-    measured_page = [belong(segment, ref_sets) for segment in found]
+    found = set(re.findall(reg, segmented.text(), re.UNICODE))
 
-    tp = float(sum(measured_page))
-    fp = float(len(found) - tp)
-    fn = float(len(ref_sets) - tp)
+    return compare(found, ref_seg)
 
-    precision = tp/(tp+fp)
-    recall = tp/(tp+fn)
-    # jaccard
-    # return sum(measured_page) / (len(ref_sets) + len(segmented) - sum(measured_page))
+
+def fuzzy_f1_score(measured_set):
+    """
+    Returns f1 score using above functions
+    @param measured_set:
+    @return:
+    """
+    tp = float(sum(measured_set))
+
+    fp = float(len(measured_set) - tp)
+    fn = float(len(measured_set) - tp)
+
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
 
     # F1
     if tp == 0:
         return 0.0
-    return 2*precision*recall/(precision+recall)
+    return 2 * precision * recall / (precision + recall)

@@ -16,7 +16,7 @@ def cosine_similarity(doc1, doc2):
     """
     if len(doc1) == 0 or len(doc2) == 0:
         return 0.0
-
+    # dice
     main_vector = set(doc1.union(doc2))
 
     vector1 = map(lambda x: x in doc1, main_vector)
@@ -54,6 +54,6 @@ def prep(html_doc):
         empty_tags = soup.findAll(lambda tag: not tag.contents and (tag.string is None or not tag.string.strip()))
         [empty_tag.extract() for empty_tag in empty_tags]
 
-    return Segment(body)
+    return body
 
 

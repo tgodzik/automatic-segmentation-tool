@@ -3,6 +3,11 @@ from bs4 import element
 # -*- coding: utf-8 -*-
 
 
+class SegmentClass:
+    STATIC = 0
+    DYNAMIC = 1
+
+
 class Segment:
     """
     Represents a single HTML web segment.
@@ -10,9 +15,11 @@ class Segment:
 
     regexp = "[^\W\d_]+"
 
-    def __init__(self, tag):
+    def __init__(self, tag, segment_class):
         self.tags = [tag]
         self.word_density = None
+        self.index = 0.0
+        self.sclass = segment_class
 
     def __str__(self):
         return "".join([str(i) for i in self.tags])
@@ -41,8 +48,7 @@ class Segment:
     def calculate_density(self, max_line=80):
         """
         Get the current text density of the segment.
-        @todo possible time improvements
-        @param max_line: maimum line length
+        @param max_line: maximum line length
         @return: current density
         """
         text = "".join([self.get_str(i) for i in self.tags])

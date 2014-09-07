@@ -12,63 +12,42 @@ def check_files(dn):
 
 if __name__ == "__main__":
 
-    totals = 0.0
-    totalf = 0.0
-    j = 0
-
     # specify pages to test
     base = "/home/tomasz/Documents/master_thesis/test_data/"
 
-    fileset = check_files(base)
-    # fileset = {"northfish.pl.html"}
+    # fileset = check_files(base)
+    fileset = {"northfish.pl.html"}
+
+    segmented_simple = []
+
+    segmented_fuzzy = []
+
     for i in fileset:
 
-        j += 2
-
-        files = ["a." + i, "b." + i]
-
+        files = ["a." + i, "b." + i, "c." + i]
+        files = filter(lambda x: os.path.exists(base + x), files)
         # open all needed files
         pages = [open(base + f).read() for f in files]
 
         # strip form useless tags and change to segments
         ready = map(lambda x: segmentation.prep(x), pages)
 
+        all = segmentation.tree_segmentation(ready)
 
-            # # for i in ready:
-            # #     print i.tags[0].prettify()
-            # # apply algorithms - modular part
-            # segmented = segmentation.block_fusion(ready, 0.05)
-        segmented = segmentation.tree_segmentation(ready)
+        for i in all:
+            print i[0]
 
-        # print len(segmented[0])
-        # for i in segmented[0]:
-        #     print i.density()
-        #     print i.tags[0].name
-        #     print i.word_set()
-
-        # print len(segmented[1])
-        # for i in segmented[1]:
-        #     print i.density()
-        #     print i.tags[0].name
-        #     print i.word_set()
-
-        # print len(segmented[2])
-        # for i in segmented[2]:
-        #     print i.density()
-        #     print i.tags[0].name
-        #     print i.word_set()
         # visualize
         # for i in range(0, len(segmented)):
-        #     segmentation.visualize(segmented[i], "./tmp/" + files[i])
+        # segmentation.visualize(segmented[i], "./tmp/" + files[i])
 
         # load reference pages and measure
-        for ii in range(0, len(segmented)):
-            simpl = segmentation.simple_measure(segmented[ii], files[ii])
-            fuzz = segmentation.fuzzy_measure(segmented[ii], files[ii])
-            totals += simpl
-            totalf += fuzz
-            # print files[ii] + " - simple: ", simpl
-            # print files[ii] + " - fuzzy: ", fuzz
+        for ii in range(0, len(all)):
+            simpl = segmentation.simple_measure(all[ii][0], files[ii])
+            fuzz = segmentation.fuzzy_measure(all[ii][0], files[ii])
 
-    print "Total simple : ", totals / float(j)
-    print "Total fuzzy : ", totalf / float(j)
+            segmented_simple.append(simpl)
+            segmented_fuzzy.append(fuzz)
+
+    print segmentation.simple_f1_score(segmented_simple)
+    print segmentation.fuzzy_f1_score(segmented_fuzzy)

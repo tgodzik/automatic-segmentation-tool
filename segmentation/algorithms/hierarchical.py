@@ -1,6 +1,6 @@
 import re
 from bs4 import element
-from .segment import Segment
+from .segment import Segment, SegmentClass
 from .functions import cosine_similarity
 
 list_tags = ["ul", "ol", "dl"]
@@ -70,60 +70,45 @@ def set_compare(s1, s2):
     return s1 == s2
 
 
-def unique_sets(sets):
-    if len(sets[0]) > 0:
-        for i in xrange(len(sets)):
-            for j in range(i, len(sets)):
-                if set_compare(sets[i], sets[j]):
-                    return False
-        return True
-    return False
-
-
-def cases(tags, treshold):
+def cases(tags):
     """
     Analyze and check different cases.
     @param tags: all tags
-    @param treshold: similarity threshold
     @return: sequence of ids to check
     """
-    # @todo conditions about lists
-    # if all(x.name in list_tags for x in tags):
+
+    # check whether it is not to similar
+    sets = map(lambda x: word_set(x.text), tags)
+    if all(set_compare(x, sets[0]) for x in sets[1:]):
+        return map(lambda sg: [Segment(sg, SegmentClass.STATIC)], tags), True
 
     sequences = map(lambda one: map(change_tag, one.children), tags)
 
-    # do tags have the same children sequences
+    # compare all the sequences
+    # if they are the same we need to check them
     if all(sequence_compare(sequences[0], seq) for seq in sequences[1:]) and (len(sequences[0]) != 0):
 
-
-        # get a mapping
+        # check if they contain any block level
         filtered = [filter_tag(sequences[0][i], i) for i in range(len(sequences[0]))]
-
         if all(f == -1 for f in filtered) and len(filtered) > 0:
+            return map(lambda sg: [Segment(sg, SegmentClass.DYNAMIC)], tags), True
 
-            ielements = map(lambda x: x.contents[i], tags)
-            sets = map(word_set, ielements)
-
-            if unique_sets(sets):
-                return map(lambda sg: [Segment(sg)], tags), True
         return filtered, False
 
     # otherwise, this is a segment
     else:
-        # print sequences
-        return map(lambda sg: [Segment(sg)], tags), True
+        return map(lambda sg: [Segment(sg, SegmentClass.DYNAMIC)], tags), True
 
 
-def concurent_search(tags, treshold):
+def concurent_search(tags):
     """
     Main function for concurently searching the tree.
     @param tags: roots of the trees
-    @param treshold: maximum similarity difference
     @return: list of segments
     """
     if all([hasattr(tag, "children") for tag in tags]):
 
-        filtered, is_segment = cases(tags, treshold)
+        filtered, is_segment = cases(tags)
 
         if is_segment:
             return filtered
@@ -132,75 +117,63 @@ def concurent_search(tags, treshold):
             for i in range(len(filtered)):
                 if filtered[i] != -1:
                     cnvs = map(lambda x: x.contents[filtered[i]], tags)
-                    cas = concurent_search(cnvs, treshold)
+                    cas = concurent_search(cnvs)
                     for r, c in zip(rets, cas):
                         r.extend(c)
 
             return rets
 
 
-def filter_out(x):
+def grade(x):
     """
-    Checks if a segment contains something more than links and numbers.
-    POSTPROCESS
+    Grades the segment.
     @param x: segment object
-    @return: True or False
     """
 
-    # if x.name in ["time", "a"]:
-    # return False
-
-    wrong = 0
-    all_letters = 0
+    wrong = 0.0
+    all_letters = 0.0
 
     for i in x.tags:
-        if isinstance(i, element.Tag):
-            reject = i.find_all(['a', 'time'])
+        reject = i.find_all(['a', 'time'])
 
-            digit_reg = re.compile("\d", re.UNICODE)
-            links_nums = sum([len(digit_reg.findall(j.text)) for j in reject])
-            nums = len(digit_reg.findall(i.text))
+        digit_reg = re.compile("\d", re.UNICODE)
+        links_nums = sum([len(digit_reg.findall(j.text)) for j in reject])
+        nums = len(digit_reg.findall(i.text))
 
-            word_reg = re.compile("\w", re.UNICODE)
-            links_all = sum([len(word_reg.findall(j.text)) for j in reject])
+        word_reg = re.compile("\w", re.UNICODE)
+        links_all = sum([len(word_reg.findall(j.text)) for j in reject])
 
-            all_letters += len(word_reg.findall(i.text))
-            wrong += nums - links_nums + links_all
+        all_letters += len(word_reg.findall(i.text))
+        wrong += nums - links_nums + links_all
+    if all_letters != 0:
+        x.index = (1.0 - float(wrong) / float(all_letters)) * len(x.word_set())
 
-    # arbitrary 0.5
-    if all_letters * 0.5 < wrong:
-        return False
+    return x
+
+
+def segment_compare(x, y):
+    if x.sclass != y.sclass:
+        return x.sclass - y.sclass
     else:
-        return True
+        dif = x.index - y.index
+        if dif > 0.0:
+            return 1
+        elif dif < 0.0:
+            return -1
+        else:
+            return 0
 
 
-# def simplify(segment):
-#
-# parent = segment.tags[0].parent
-#
-# ch = filter(lambda x: x not in inline_elements, parent.contents)
-# if len(segment.tags) == len(ch):
-#         segment.tags = [parent]
-#         simplify(segment)
-
-
-def tree_segmentation(base, treshold=0.9):
+def tree_segmentation(base):
     """
     Top level tree segmentation algorithm.
     @param base: list of root tags to analyze
-    @param treshold: similarity threshold
     @return: n lists of segments
     """
     if len(base) < 2:
         return None
 
-    base_tags = map(lambda x: x.tags[0], base)
-
-    converted = concurent_search(base_tags, treshold)
-
-    # for i in converted:
-    # for j in i:
-    # simplify(j)
-
-    return [filter(filter_out, a) for a in converted]
+    converted = concurent_search(base)
+    graded = [map(grade, a) for a in converted]
+    return [sorted(i, cmp=segment_compare, reverse=True) for i in graded]
 

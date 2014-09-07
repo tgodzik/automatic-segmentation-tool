@@ -22,10 +22,17 @@ def save_files(dn):
             reg = "[^\W\d_]+"
 
             found = map(lambda x: (re.findall(reg, x, re.UNICODE)), replaced)
-            to_save = {
-                "name": f.replace(".json", ".html"),
-                "segments": found
-            }
+            if len(found) > 0:
+                to_save = {
+                    "name": f.replace(".json", ".html"),
+                    "segment": found[0]
+                }
+            else:
+                to_save = {
+                    "name": f.replace(".json", ".html"),
+                    "segment": found
+                }
+
             coll.insert(to_save)
 
 
