@@ -16,7 +16,7 @@ if __name__ == "__main__":
     base = "/home/tomasz/Documents/master_thesis/test_data/"
 
     # fileset = check_files(base)
-    fileset = {"northfish.pl.html"}
+    fileset = {"dziennik.pl.html"}
 
     segmented_simple = []
 

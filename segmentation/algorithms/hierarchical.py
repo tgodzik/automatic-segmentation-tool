@@ -83,7 +83,7 @@ def cases(tags):
         return map(lambda sg: [Segment(sg, SegmentClass.STATIC)], tags), True
 
     sequences = map(lambda one: map(change_tag, one.children), tags)
-
+    print sequences
     # compare all the sequences
     # if they are the same we need to check them
     if all(sequence_compare(sequences[0], seq) for seq in sequences[1:]) and (len(sequences[0]) != 0):

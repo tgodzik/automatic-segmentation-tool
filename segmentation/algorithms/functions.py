@@ -48,12 +48,6 @@ def prep(html_doc):
     comments = soup.findAll(text=lambda text: isinstance(text, element.Comment))
     [comment.extract() for comment in comments]
 
-    empty_tags = [""]
-
-    while len(empty_tags) > 0:
-        empty_tags = soup.findAll(lambda tag: not tag.contents and (tag.string is None or not tag.string.strip()))
-        [empty_tag.extract() for empty_tag in empty_tags]
-
     return body
 
 
