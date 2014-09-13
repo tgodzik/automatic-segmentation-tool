@@ -44,7 +44,9 @@ def filter_tag(x, i):
     @param x: Tag or NavigableString
     @return: true if a tag, false otherwise
     """
-    if x in inline_elements or x == "text":
+    if x == "text":
+        return -2
+    elif x in inline_elements:
         return -1
     else:
         return i
@@ -57,7 +59,14 @@ def sequence_compare(sq1, sq2):
     @param sq2: sequence 2
     @return: True if similar or False otherwise
     """
-    return sq1 == sq2
+    sq1_no = filter(lambda x: x != "text", sq1)
+    sq2_no = filter(lambda x: x != "text", sq2)
+    # print sq1_no
+    # print sq2_no
+    if len(sq1_no) == 0 or len(sq2_no) == 0:
+        return False
+    else:
+        return sq1_no == sq2_no
 
 
 def set_compare(s1, s2):
@@ -70,27 +79,33 @@ def set_compare(s1, s2):
     return s1 == s2
 
 
+def seq_order(seq):
+    f = [filter_tag(seq[i], i) for i in range(len(seq))]
+    return filter(lambda x: x != -2, f)
+
+
 def cases(tags):
     """
     Analyze and check different cases.
     @param tags: all tags
     @return: sequence of ids to check
     """
-
     # check whether it is not to similar
     sets = map(lambda x: word_set(x.text), tags)
+
     if all(set_compare(x, sets[0]) for x in sets[1:]):
         return map(lambda sg: [Segment(sg, SegmentClass.STATIC)], tags), True
 
     sequences = map(lambda one: map(change_tag, one.children), tags)
-    print sequences
+
     # compare all the sequences
     # if they are the same we need to check them
     if all(sequence_compare(sequences[0], seq) for seq in sequences[1:]) and (len(sequences[0]) != 0):
 
         # check if they contain any block level
-        filtered = [filter_tag(sequences[0][i], i) for i in range(len(sequences[0]))]
-        if all(f == -1 for f in filtered) and len(filtered) > 0:
+        filtered = [seq_order(seq) for seq in sequences]
+
+        if all(f == -1 for f in filtered[0]):
             return map(lambda sg: [Segment(sg, SegmentClass.DYNAMIC)], tags), True
 
         return filtered, False
@@ -109,19 +124,20 @@ def concurent_search(tags):
     if all([hasattr(tag, "children") for tag in tags]):
 
         filtered, is_segment = cases(tags)
-
         if is_segment:
             return filtered
         else:
             rets = [[] for _ in xrange(len(tags))]
-            for i in range(len(filtered)):
-                if filtered[i] != -1:
-                    cnvs = map(lambda x: x.contents[filtered[i]], tags)
+            for i in range(len(filtered[0])):
+                if filtered[0][i] != -1:
+                    cnvs = map(lambda x: tags[x].contents[filtered[x][i]], range(len(tags)))
                     cas = concurent_search(cnvs)
                     for r, c in zip(rets, cas):
                         r.extend(c)
 
             return rets
+    else:
+        return [[] for _ in xrange(len(tags))]
 
 
 def grade(x):

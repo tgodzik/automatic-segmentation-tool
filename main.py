@@ -15,9 +15,10 @@ if __name__ == "__main__":
     # specify pages to test
     base = "/home/tomasz/Documents/master_thesis/test_data/"
 
-    # fileset = check_files(base)
-    fileset = {"dziennik.pl.html"}
-
+    fileset = check_files(base)
+    # fileset = {"9gag.com.html", "agh.edu.pl.html", "brw.pl.html", "caranddriver.com.html",
+    #            "craigslist.com.html", "disney.pl.html", "dobreprogramy.pl.html"}
+    fileset = {"fan.com.pl.html"}
     segmented_simple = []
 
     segmented_fuzzy = []
@@ -32,22 +33,23 @@ if __name__ == "__main__":
         # strip form useless tags and change to segments
         ready = map(lambda x: segmentation.prep(x), pages)
 
-        all = segmentation.tree_segmentation(ready)
-
-        for i in all:
-            print i[0]
+        all_segs = segmentation.tree_segmentation(ready)
+        print all_segs
+        for a in all_segs:
+            print a[0].tags[0].prettify()
 
         # visualize
         # for i in range(0, len(segmented)):
         # segmentation.visualize(segmented[i], "./tmp/" + files[i])
 
         # load reference pages and measure
-        for ii in range(0, len(all)):
-            simpl = segmentation.simple_measure(all[ii][0], files[ii])
-            fuzz = segmentation.fuzzy_measure(all[ii][0], files[ii])
+        if len(all_segs[0]) > 0:
+            for ii in range(0, len(all_segs)):
+                simpl = segmentation.simple_measure(all_segs[ii][0], files[ii])
+                fuzz = segmentation.fuzzy_measure(all_segs[ii][0], files[ii])
+                print files[ii], simpl, fuzz
+                segmented_simple.append(simpl)
+                segmented_fuzzy.append(fuzz)
 
-            segmented_simple.append(simpl)
-            segmented_fuzzy.append(fuzz)
-
-    print segmentation.simple_f1_score(segmented_simple)
-    print segmentation.fuzzy_f1_score(segmented_fuzzy)
+    print segmentation.comulative(segmented_simple)
+    print segmentation.comulative_fuzzy(segmented_fuzzy)
