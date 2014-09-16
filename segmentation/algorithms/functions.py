@@ -4,6 +4,55 @@ from bs4 import BeautifulSoup, element
 from .segment import Segment
 
 
+def word_count(text):
+    regexp = "[^\W\d_]+"
+    found = re.findall(regexp, text, re.UNICODE)
+    return len(found)
+
+
+def max_wordcount(tag):
+    densities = []
+    for i in tag.contents:
+        if isinstance(i, element.NavigableString):
+            densities.append(word_count(unicode(i)))
+        else:
+            densities.append(max_wordcount(i))
+
+    if len(densities) > 0:
+        return max(densities)
+
+
+def min_wordcount(tag):
+    densities = []
+    for i in tag.contents:
+        if isinstance(i, element.NavigableString):
+            densities.append(word_count(unicode(i)))
+        else:
+            densities.append(min_wordcount(i))
+
+    densities = filter(lambda x: x != 0.0, densities)
+    if len(densities) > 0:
+        return min(densities)
+
+
+def wordcounts(tag):
+    densities = []
+    for i in tag.contents:
+        if isinstance(i, element.NavigableString):
+            densities.append(word_count(unicode(i)))
+        else:
+            densities.extend(wordcounts(i))
+
+    densities = filter(lambda x: x != 0.0, densities)
+
+    return densities
+
+
+def average_wordcount(tag):
+    ds = wordcounts(tag)
+    return sum(ds) / float(len(ds))
+
+
 def cosine_similarity(doc1, doc2):
     """
     Calculates cosine similarity between 2 html documents.

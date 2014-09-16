@@ -26,8 +26,16 @@ def fuzzy_measure(segment, name):
     fp = float(len(ref_seg) - tp)
     fn = float(len(found) - tp)
 
+    if tp + fp == 0.0:
+        return 0.0
+
     precision = tp / (tp + fp)
+
+    if tp + fn == 0.0:
+        return 0.0
+
     recall = tp / (tp + fn)
+
     if precision+recall == 0.0:
         return 0.0
     f1 = 2 * precision * recall / (precision + recall)

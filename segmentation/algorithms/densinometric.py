@@ -2,13 +2,6 @@ from bs4 import element
 import re
 
 
-def difference(density, other_density):
-    if density == 0.0 or other_density == 0.0:
-        return 0.0
-    else:
-        return abs(density - other_density) / max(density, other_density)
-
-
 def calculate_density(text, max_line=80):
     regexp = "[^\W\d_]+"
     sum_len = len(text)
@@ -35,3 +28,36 @@ def max_density(tag):
 
     if len(densities) > 0:
         return max(densities)
+    else:
+        return 0.0
+
+
+def min_density(tag):
+    densities = []
+    for i in tag.contents:
+        if isinstance(i, element.NavigableString):
+            densities.append(calculate_density(unicode(i)))
+        else:
+            densities.append(min_density(i))
+
+    densities = filter(lambda x: x != 0.0, densities)
+    if len(densities) > 0:
+        return min(densities)
+    else:
+        return 0.0
+
+
+def word_densities(tag):
+    densities = []
+    for i in tag.contents:
+        if isinstance(i, element.NavigableString):
+            densities.append(calculate_density(unicode(i)))
+        else:
+            densities.extend(word_densities(i))
+    densities = filter(lambda x: x != 0.0, densities)
+    return densities
+
+
+def average_density(tag):
+    ds = word_densities(tag)
+    return sum(ds) / float(len(ds))

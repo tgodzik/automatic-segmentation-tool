@@ -77,6 +77,7 @@ def set_compare(s1, s2):
     @param s2: set 2
     @return: True if similar or False otherwise
     """
+    # return cosine_similarity(s1, s2) >= 0.5
     return s1 == s2
 
 
@@ -147,24 +148,8 @@ def grade(x):
     @param x: segment object
     """
 
-    wrong = 0.0
-    all_letters = 0.0
-
-    for i in x.tags:
-        reject = i.find_all(['a', 'time'])
-
-        digit_reg = re.compile("\d", re.UNICODE)
-        links_nums = sum([len(digit_reg.findall(j.text)) for j in reject])
-        nums = len(digit_reg.findall(i.text))
-
-        word_reg = re.compile("\w", re.UNICODE)
-        links_all = sum([len(word_reg.findall(j.text)) for j in reject])
-
-        all_letters += len(word_reg.findall(i.text))
-        wrong += nums - links_nums + links_all
-    if all_letters != 0:
-        x.index = (1.0 - float(wrong) / float(all_letters)) * max_density(x.tags[0])#len(x.word_set())
-
+    # x.index = max_density(x.tags[0])
+    x.index = len(x.word_set())
     return x
 
 
