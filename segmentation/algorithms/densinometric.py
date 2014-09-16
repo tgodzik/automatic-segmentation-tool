@@ -60,4 +60,6 @@ def word_densities(tag):
 
 def average_density(tag):
     ds = word_densities(tag)
+    if len(ds) == 0:
+        return 0.0
     return sum(ds) / float(len(ds))

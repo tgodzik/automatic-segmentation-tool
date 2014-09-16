@@ -11,45 +11,51 @@ def word_count(text):
 
 
 def max_wordcount(tag):
-    densities = []
+    counts = []
     for i in tag.contents:
         if isinstance(i, element.NavigableString):
-            densities.append(word_count(unicode(i)))
+            counts.append(word_count(unicode(i)))
         else:
-            densities.append(max_wordcount(i))
+            counts.append(max_wordcount(i))
 
-    if len(densities) > 0:
-        return max(densities)
+    if len(counts) > 0:
+        return max(counts)
+    else:
+        return 0.0
 
 
 def min_wordcount(tag):
-    densities = []
+    counts = []
     for i in tag.contents:
         if isinstance(i, element.NavigableString):
-            densities.append(word_count(unicode(i)))
+            counts.append(word_count(unicode(i)))
         else:
-            densities.append(min_wordcount(i))
+            counts.append(min_wordcount(i))
 
-    densities = filter(lambda x: x != 0.0, densities)
-    if len(densities) > 0:
-        return min(densities)
+    counts = filter(lambda x: x != 0.0, counts)
+    if len(counts) > 0:
+        return min(counts)
+    else:
+        return 0.0
 
 
 def wordcounts(tag):
-    densities = []
+    counts = []
     for i in tag.contents:
         if isinstance(i, element.NavigableString):
-            densities.append(word_count(unicode(i)))
+            counts.append(word_count(unicode(i)))
         else:
-            densities.extend(wordcounts(i))
+            counts.extend(wordcounts(i))
 
-    densities = filter(lambda x: x != 0.0, densities)
+    counts = filter(lambda x: x != 0.0, counts)
 
-    return densities
+    return counts
 
 
 def average_wordcount(tag):
     ds = wordcounts(tag)
+    if len(ds) == 0:
+        return 0.0
     return sum(ds) / float(len(ds))
 
 

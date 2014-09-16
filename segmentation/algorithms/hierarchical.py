@@ -1,8 +1,8 @@
 import re
 from bs4 import element
 from .segment import Segment, SegmentClass
-from .functions import cosine_similarity
-from .densinometric import max_density
+from .functions import cosine_similarity, min_wordcount, max_wordcount,average_wordcount
+from .densinometric import max_density, min_density, average_density, calculate_density
 
 list_tags = ["ul", "ol", "dl"]
 inline_elements = ["b", "big", "i", "small", "tt", "abbr", "acronym", "cite",
@@ -150,6 +150,7 @@ def grade(x):
 
     # x.index = max_density(x.tags[0])
     x.index = len(x.word_set())
+    # x.index = max_wordcount(x.tags[0])
     return x
 
 
