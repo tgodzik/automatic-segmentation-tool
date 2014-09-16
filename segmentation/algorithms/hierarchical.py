@@ -2,6 +2,7 @@ import re
 from bs4 import element
 from .segment import Segment, SegmentClass
 from .functions import cosine_similarity
+from .densinometric import max_density
 
 list_tags = ["ul", "ol", "dl"]
 inline_elements = ["b", "big", "i", "small", "tt", "abbr", "acronym", "cite",
@@ -162,7 +163,7 @@ def grade(x):
         all_letters += len(word_reg.findall(i.text))
         wrong += nums - links_nums + links_all
     if all_letters != 0:
-        x.index = (1.0 - float(wrong) / float(all_letters)) * len(x.word_set())
+        x.index = (1.0 - float(wrong) / float(all_letters)) * max_density(x.tags[0])#len(x.word_set())
 
     return x
 
@@ -182,9 +183,11 @@ def segment_compare(x, y):
 
 def tree_segmentation(base):
     """
-    Top level tree segmentation algorithm.
+    Top level structure segmentation algorithm.
     @param base: list of root tags to analyze
-    @return: n lists of segments
+    @type base: list of bs4.element.Tag
+    @return n lists of segments
+    @rtype list of segmentation.Segment
     """
     if len(base) < 2:
         return None

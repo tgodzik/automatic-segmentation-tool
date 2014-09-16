@@ -5,11 +5,11 @@ from pymongo import MongoClient
 
 def simple_measure(segmented, name):
     """
-    Returns similarity index between pages
-    @param segmented: a list of Segment type objects representing segments found by algorithm
+    Checks whether a segment is similar to a previously marked reference segment set.
+    @param segmented: segment
     @param name: name of the file being analyzed
-    @rtype double
-    @return similarity between set of Segments and a set of refrence segments from database
+    @rtype bool
+    @return whether they are similar.
     """
 
     client = MongoClient()
@@ -21,6 +21,7 @@ def simple_measure(segmented, name):
     reg = "[^\W\d_]+"
     found = set(re.findall(reg, segmented.text(), re.UNICODE))
 
+    # print (ref_seg - found) | (found - ref_seg)
     tp = float(len(ref_seg & found))
     fp = float(len(ref_seg) - tp)
     fn = float(len(found) - tp)

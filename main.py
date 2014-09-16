@@ -1,5 +1,7 @@
 import segmentation
 import os
+import time
+from segmentation.algorithms.densinometric import max_density
 
 
 def check_files(dn):
@@ -12,17 +14,19 @@ def check_files(dn):
 
 if __name__ == "__main__":
 
+
     # specify pages to test
     base = "/home/tomasz/Documents/master_thesis/test_data/"
 
     fileset = check_files(base)
     # fileset = {"9gag.com.html", "agh.edu.pl.html", "brw.pl.html", "caranddriver.com.html",
-    #            "craigslist.com.html", "disney.pl.html", "dobreprogramy.pl.html"}
-    fileset = {"fan.com.pl.html"}
+    # "craigslist.com.html", "disney.pl.html", "dobreprogramy.pl.html"}
+    # fileset = {"komiks.wp.pl.html"}
     segmented_simple = []
 
     segmented_fuzzy = []
 
+    start = time.time()
     for i in fileset:
 
         files = ["a." + i, "b." + i, "c." + i]
@@ -34,10 +38,10 @@ if __name__ == "__main__":
         ready = map(lambda x: segmentation.prep(x), pages)
 
         all_segs = segmentation.tree_segmentation(ready)
-        print all_segs
-        for a in all_segs:
-            print a[0].tags[0].prettify()
-
+        # print all_segs
+        # for a in all_segs:
+            # print max_density(a[0].tags[0]), a[0].tags[0].name, a[0].tags[0].attrs
+            # print max_density(a[1].tags[0]), a[1].tags[0].name, a[1].tags[0].attrs
         # visualize
         # for i in range(0, len(segmented)):
         # segmentation.visualize(segmented[i], "./tmp/" + files[i])
@@ -50,6 +54,6 @@ if __name__ == "__main__":
                 print files[ii], simpl, fuzz
                 segmented_simple.append(simpl)
                 segmented_fuzzy.append(fuzz)
-
+    print "Time : ", time.time() - start
     print segmentation.comulative(segmented_simple)
     print segmentation.comulative_fuzzy(segmented_fuzzy)

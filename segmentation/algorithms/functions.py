@@ -33,8 +33,11 @@ def cosine_similarity(doc1, doc2):
 
 
 def prep(html_doc):
-    """Removes unnecessary tags
-
+    """Removes unnecessary tags.
+    @param html_doc: document to be prepared
+    @type html_doc: str
+    @return body tag without comments and unnecessary tags.
+    @rtype bs4.element.Tag
     """
     doc = re.sub("[\s]+", " ", html_doc)
     soup = BeautifulSoup(doc)

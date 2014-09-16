@@ -10,6 +10,15 @@ dname = "/home/tomasz/Documents/master_thesis/test_marked"
 client = MongoClient()
 
 coll = client.segmentation.reference_set
+coll.remove()
+
+
+def strip(a):
+    stripped = ["script", "noscript", "link", "iframe", "meta", "style"]
+    body = a.find("body")
+    for s in body.find_all(stripped):
+        s.decompose()
+    return a
 
 
 def save_files(dn):
@@ -17,7 +26,7 @@ def save_files(dn):
         for f in files:
             jslist = json.load(open(dn + "/" + f))
 
-            replaced = map(lambda x: BeautifulSoup(x).text, jslist)
+            replaced = map(lambda x: strip(BeautifulSoup(x)).text, jslist)
 
             reg = "[^\W\d_]+"
 

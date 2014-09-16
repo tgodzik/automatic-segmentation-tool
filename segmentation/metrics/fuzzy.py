@@ -3,13 +3,14 @@ import re
 from pymongo import MongoClient
 
 
-def fuzzy_measure(segmented, name):
+def fuzzy_measure(segment, name):
     """
-    Returns similarity index between pages
-    @param segmented: a list of Segment type objects representing segments found by algorithm
+    Returns similarity F1 score between segment and previously marked reference segment set.
+    @param segment: segment to be checked
+    @type segment: segmentation.Segment
     @param name: name of the file being analyzed
     @rtype double
-    @return similarity between set of Segments and a set of refrence segments from database
+    @return how they are similar
     """
 
     client = MongoClient()
@@ -19,7 +20,7 @@ def fuzzy_measure(segmented, name):
     ref_seg = set(reference_set.find_one({"name": name})["segment"])
 
     reg = "[^\W\d_]+"
-    found = set(re.findall(reg, segmented.text(), re.UNICODE))
+    found = set(re.findall(reg, segment.text(), re.UNICODE))
 
     tp = float(len(ref_seg & found))
     fp = float(len(ref_seg) - tp)

@@ -1,76 +1,37 @@
-from .segment import Segment
+from bs4 import element
+import re
 
 
-def simplify(seg):
-    """
-    Go up the tree if possible.
-    @param seg: segment to check
-    @return: simplified segment
-    """
-    parent = seg.tags[0].parent
-
-    if len(seg.tags) == len(parent.find_all()):
-        seg.tags = [parent]
-        simplify(seg)
+def difference(density, other_density):
+    if density == 0.0 or other_density == 0.0:
+        return 0.0
+    else:
+        return abs(density - other_density) / max(density, other_density)
 
 
-def break_up(tag):
-    """
-    Find the smallest possible segments
-    @param tag: root tag
-    @return: list of smallest possible segments
-    """
-    if hasattr(tag, 'children'):
-        children = {c.name for c in tag.children}
-        children = set(filter(lambda x: x, children))
-        if len(children) == 0 or len(children.intersection({"a", "strong", "br"})) is not 0:
-            return [Segment(tag)]
+def calculate_density(text, max_line=80):
+    regexp = "[^\W\d_]+"
+    sum_len = len(text)
+    lines = int(sum_len / max_line)
+    if lines > 0:
+        r = max_line * lines
+        reduced_text = text[0:r]
+        found = re.findall(regexp, reduced_text, re.UNICODE)
+        word_density = float(len(found)) / float(lines)
+    else:
+        found = re.findall(regexp, text, re.UNICODE)
+        word_density = float(len(found))
+
+    return word_density
+
+
+def max_density(tag):
+    densities = []
+    for i in tag.contents:
+        if isinstance(i, element.NavigableString):
+            densities.append(calculate_density(unicode(i)))
         else:
-            ret_list = []
-            for c in tag.children:
-                if c.name is not None:
-                    ret_list.extend(break_up(c))
-            return ret_list
+            densities.append(max_density(i))
 
-
-def block_fusion(segments, treshold=0.5):
-    """
-    Function responsible for segmentation
-    :param segments segments to be divided
-    :param treshold join threshold
-    :returns lists of divided segments
-    """
-
-    divided = []
-
-    for segment in segments:
-
-        tmp = [break_up(i) for i in segment.tags]
-        blocks = []
-        map(blocks.extend, tmp)
-
-        change = True
-
-        while change:
-            change = False
-            new_blocks = []
-            for i in range(0, len(blocks) - 1):
-                if blocks[i] and blocks[i].difference(blocks[i + 1]) < treshold:
-                    new = blocks[i] + blocks[i + 1]
-                    simplify(new)
-                    new_blocks.append(new)
-                    change = True
-                    blocks[i] = None
-                    blocks[i + 1] = None
-                elif blocks[i]:
-                    new_blocks.append(blocks[i])
-            if change:
-                if blocks[-1]:
-                    new_blocks.append(blocks[-1])
-                blocks = new_blocks
-
-        divided.append(blocks)
-
-    return divided
-
-
+    if len(densities) > 0:
+        return max(densities)
