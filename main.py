@@ -22,6 +22,8 @@ if __name__ == "__main__":
     # fileset = {"9gag.com.html", "agh.edu.pl.html", "brw.pl.html", "caranddriver.com.html",
     # "craigslist.com.html", "disney.pl.html", "dobreprogramy.pl.html"}
     # fileset = {"komiks.wp.pl.html"}
+    base = "/home/tomasz/Documents/master_thesis/test_data/"
+
     segmented_simple = []
 
     segmented_fuzzy = []
@@ -30,6 +32,8 @@ if __name__ == "__main__":
     for i in fileset:
 
         files = ["a." + i, "b." + i, "c." + i]
+        print segmentation.multi_sequence_sim(base+files[0], base+files[1])
+
         files = filter(lambda x: os.path.exists(base + x), files)
         # open all needed files
         pages = [open(base + f).read() for f in files]

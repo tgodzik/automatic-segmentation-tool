@@ -1,18 +1,6 @@
 import numpy as np
-
-
-inline_elements = {"b", "big", "i", "small", "tt", "abbr", "acronym", "cite",
-                   "code", "dfn", "em", "kbd", "strong", "samp", "var", "a",
-                   "bdo", "br", "img", "map", "object", "q", "script", "span",
-                   "sub", "sup", "button", "input", "label", "select", "textarea",
-                   "cufontext", "cufon"}
-
-
-def short_hand(a):
-    if a in inline_elements:
-        return 1
-    else:
-        return 2
+from bs4 import element
+from .functions import prep
 
 
 def simple_cost(a, b, gap_score=1):
@@ -22,14 +10,12 @@ def simple_cost(a, b, gap_score=1):
     :return cost as int
 
     """
-    if a == b:
-        return 0
-    elif a is None:
-        return short_hand(b)
+    if a is None:
+        return gap_score * int(b)
     elif b is None:
-        return short_hand(a)
+        return gap_score * int(a)
     else:
-        return short_hand(a) + short_hand(b)
+        return abs(int(a) - int(b))
 
 
 def sequence_sim(a, b, cost=simple_cost):
@@ -61,7 +47,7 @@ def sequence_sim(a, b, cost=simple_cost):
             gapb = arr[i, j - 1] + cost(None, b[j - 1])
             arr[i, j] = min(match, gapa, gapb)
 
-    return arr, arr[lena, lenb]
+    return arr, 1 - arr[lena, lenb] / (sum(map(float, a)) + sum(map(float, b)))
 
 
 def aligment(a, b, arr, cost=simple_cost):
@@ -87,10 +73,10 @@ def aligment(a, b, arr, cost=simple_cost):
             j -= 1
         elif (arr[i, j] - cost(a[i - 1], None)) == arr[i - 1, j]:
             a_aln.insert(0, a[i - 1])
-            b_aln.insert(0, "_")
+            b_aln.insert(0, 0)
             i -= 1
         elif (arr[i, j] - cost(None, b[j - 1])) == arr[i, j - 1]:
-            a_aln.insert(0, "_")
+            a_aln.insert(0, 0)
             b_aln.insert(0, b[j - 1])
             j -= 1
         else:
@@ -98,24 +84,40 @@ def aligment(a, b, arr, cost=simple_cost):
 
     while i > 0:
         a_aln.insert(0, a[i - 1])
-        b_aln.insert(0, "_")
+        b_aln.insert(0, 0)
         i -= 1
 
     while j > 0:
-        a_aln.insert(0, "_")
+        a_aln.insert(0, 0)
         b_aln.insert(0, b[j - 1])
         j -= 1
 
     return a_aln, b_aln
 
-# seq1 = ['text', 'text', 'text', 'text', 'div', 'text', 'div', 'text', 'text', 'div', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'div', 'text', 'div', 'text', 'div', 'text', 'div', 'text', 'div', 'text', 'div', 'text', 'div', 'text', 'div', 'text', 'div', 'text', 'text', 'text']
-# seq2 = ['div', 'div', 'div', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']
 
-seq1 = ['div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'text', 'div', 'text', 'text', 'text']
-seq2 = ['div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'text', 'div', 'text', 'div', 'text', 'text']
+def search(root, acc, level=0):
+    if hasattr(root, "children"):
+        chs = filter(lambda x: isinstance(x, element.Tag), [i for i in root.children])
+        count = len(chs) + 1
+        if len(acc) <= level:
+            acc.append([])
+        acc[level].append(count)
+        for i in chs:
+            search(i, acc, level + 1)
+        return acc
 
-# seq1 = ["div", "div", "ul", "ul", "div"]
-# seq2 = ["div", "div", "ul", "div"]
-arr, res = sequence_sim(seq1, seq2)
-print arr
-print aligment(seq1, seq2, arr)
+
+def multi_sequence_sim(a, b, cost=simple_cost):
+    tree1 = search(prep(open(a).read()), [])
+    tree2 = search(prep(open(b).read()), [])
+    sum_sim = 0.0
+    il_sim = 1.0
+    for i in range(0, min(len(tree1), len(tree2))):
+        _, res = sequence_sim(tree1[i], tree2[i])
+        # print res
+        sum_sim += res
+        il_sim *= res
+    bot = sum_sim / len(tree1)
+    # print sum_sim, il_sim, bot
+    return bot
+
