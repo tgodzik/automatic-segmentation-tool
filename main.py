@@ -19,6 +19,7 @@ if __name__ == "__main__":
     base = "/home/tomasz/Documents/master_thesis/test_data/"
 
     fileset = check_files(base)
+    
     # fileset = {"9gag.com.html", "agh.edu.pl.html", "brw.pl.html", "caranddriver.com.html",
     # "craigslist.com.html", "disney.pl.html", "dobreprogramy.pl.html"}
     # fileset = {"komiks.wp.pl.html"}
@@ -35,6 +36,7 @@ if __name__ == "__main__":
         print segmentation.multi_sequence_sim(base+files[0], base+files[1])
 
         files = filter(lambda x: os.path.exists(base + x), files)
+        
         # open all needed files
         pages = [open(base + f).read() for f in files]
 
@@ -42,6 +44,7 @@ if __name__ == "__main__":
         ready = map(lambda x: segmentation.prep(x), pages)
 
         all_segs = segmentation.tree_segmentation(ready)
+        
         # print all_segs
         # for a in all_segs:
             # print max_density(a[0].tags[0]), a[0].tags[0].name, a[0].tags[0].attrs
